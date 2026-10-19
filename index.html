@@ -80,7 +80,7 @@
             </div>
 
             <div class="w-full notebook-stage rounded-2xl border border-slate-200 p-3 sm:p-5 flex justify-center items-center shadow-inner overflow-hidden bg-white">
-                <div class="relative w-full max-w-[620px] shadow-2xl rounded-sm overflow-hidden bg-white">
+                <div class="relative W-full max-w-[620px] shadow-2xl rounded-sm overflow-hidden bg-white">
                     <canvas id="notebookCanvas" width="1240" height="1754" class="w-full h-auto block select-none"></canvas>
                 </div>
             </div>
@@ -88,7 +88,7 @@
     </main>
 
     <script>
-        const correctSolution = `Домашняя работа.\n\nЗадание:\nНайдите все значения x, кратные 5, при которых верно неравенство:\n\n1) 59 < x < 75;\nРешение: число должно оканчиваться на 0 или 5.\nЗначения: 60, 65, 70.\n\n2) 3728 < x < 5764.\nРешение: проверяем границы интервала.\nЗначения: 3730, 3735, ..., 5760.\n\nОтвет: 1) 60, 65, 70; 2) от 3730 до 5760.`;
+        const correctSolution = `Домашняя работа.\n\nЗадание:\nНайдите все значения x, кратные 5, при которых верно неравенство:\n\n1) 59 < x < 75;\nРешение: число должно оканчиваться на 0 или 5.\nЗначения: 60, 65, 70.\n\n2) 3728 < x < 5764;\nРешение: проверяем границы интервала.\nЗначения: 3730, 3735, ..., 5760.\n\nОтвет: 1) 60, 65, 70; 2) от 3730 до 5760.`;
 
         const canvas = document.getElementById('notebookCanvas');
         const ctx = canvas.getContext('2d');
@@ -174,7 +174,7 @@
                 }
             });
 
-            // Убрали всплывающее окно (alert), теперь решение вставляется мгновенно без кликов
+            // Кнопка просто обновляет текст и тетрадь без каких-либо всплывающих окон
             document.getElementById('solveWithAiBtn').addEventListener('click', () => {
                 textInput.value = correctSolution;
                 renderNotebook();
