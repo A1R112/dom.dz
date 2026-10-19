@@ -55,7 +55,7 @@
                     <div class="flex items-center gap-2">
                         <h1 class="font-bold text-lg sm:text-xl text-slate-900">Почерк<span class="text-blue-600">.AI</span></h1>
                         <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-300">
-                            РешУтка.ру (Любые номера)
+                            РешУтка.ру (Прямое фото)
                         </span>
                     </div>
                     <p class="text-xs text-slate-500 hidden sm:block">Решает любые номера с фото и по параметрам</p>
@@ -119,12 +119,12 @@
                             </select>
                         </div>
                         <div>
-                            <input type="text" id="taskNumberInput" placeholder="№ 285" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
+                            <input type="text" id="taskNumberInput" placeholder="№ номера" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
                         </div>
                     </div>
                 </div>
 
-                <!-- Зона загрузки фото с надежным отображением -->
+                <!-- Зона загрузки фото -->
                 <div class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-3 text-center cursor-pointer transition bg-slate-50 relative">
                     <input type="file" id="photoInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
                     <div id="uploadEmptyState" class="py-2 pointer-events-none">
@@ -139,11 +139,11 @@
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Уточнение или текст задачи:</label>
-                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Решить абсолютно все пункты..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Решить абсолютно все пункты с фото..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
                 <button type="button" id="solveBtn" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-md transition cursor-pointer">
-                    <i class="fa-solid fa-bolt mr-1"></i> Получить решение и объяснение с РешУтка.ру
+                    <i class="fa-solid fa-bolt mr-1"></i> Распознать фото и решить с РешУтка.ру
                 </button>
 
                 <div id="statusBox" class="hidden p-3 rounded-xl text-xs font-medium border"></div>
@@ -223,8 +223,6 @@
     </main>
 
     <script>
-        var FALLBACK_SOLUTION = "Домашняя работа.\n(РешУтка.ру — Алгебра 8 класс, №285)\n\nРешение всех пунктов:\nа) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) = (1 - 2x) / (1 - x).\nб) ((a + b) / b - a / (a + b)) : ((a + b) / a - b / (a + b)) = a / b.\nв) (3a² - a + 3) / (a³ - 1) - (a - 1) / (a² + a + 1) + 2 / (1 - a) = a / (1 - a³).\nг) (2b / (1 - b) - b) : ((3b + b²) / (b - 1)) = -(b + 1) / (b + 3).\nд) (a - x + x² / (a + x)) · (a - x) / a = a(a - x) / (a + x).\n\nПодробное объяснение:\n1) В подобных выражениях сначала выполняются действия в скобках, дроби приводятся к общему знаменателю.\n2) Используются формулы сокращенного умножения (разность квадратов, разность кубов).\n3) Знак деления заменяется умножением на обратную дробь для последующего сокращения числителя и знаменателя.";
-
         var appState = {
             imageDataUrl: null,
             fontFamily: "Caveat",
@@ -410,7 +408,7 @@
                 previewImg.src = appState.imageDataUrl;
                 document.getElementById("uploadEmptyState").classList.add("hidden");
                 document.getElementById("uploadPreviewState").classList.remove("hidden");
-                setStatus("Фото успешно загружено! Нажмите «Получить решение и объяснение с РешУтка.ру».", false);
+                setStatus("Фото успешно загружено! Нажмите «Распознать фото и решить с РешУтка.ру».", false);
             };
             reader.readAsDataURL(file);
         });
@@ -429,7 +427,7 @@
             }
 
             btn.disabled = true;
-            setStatus("ИИ анализирует ваше задание и находит решение в базе...", true);
+            setStatus("ИИ анализирует вашу фотографию и распознает все пункты задания...", true);
 
             try {
                 var queryDetails = "Предмет: " + subject + ", " + gradeClass + ".";
@@ -439,7 +437,7 @@
                 
                 var userContent = [{
                     type: "text",
-                    text: queryDetails + "\nВНИМАНИЕ: Распознай задание по фото или по номеру. Реши АБСОЛЮТНО ВСЕ пункты (а, б, в, г, д и т.д.) полностью, без сокращений. Выдай ответ строго в таком формате:\n1. Сначала напиши аккуратное пошаговое решение всех пунктов с ответами в стиле решебника РешУтка.ру.\n2. В САМОМ КОНЦЕ добавь заголовок «Подробное объяснение:» и понятно объясни все шаги и формулы."
+                    text: queryDetails + "\nВНИМАНИЕ: Внимательно посмотри на прикрепленное фото или указанный номер. Найди и реши АБСОЛЮТНО ВСЕ пункты (например, а, б, в, г, д и т.д.), которые там есть. Не пропускай ни одного примера! Выдай ответ строго в таком формате:\n1. Сначала напиши пошаговое решение абсолютно всех пунктов с ответами в стиле решебника РешУтка.ру.\n2. В САМОМ КОНЦЕ добавь заголовок «Подробное объяснение:» и подробно объясни правила и ход решения."
                 }];
 
                 if (appState.imageDataUrl) {
@@ -452,7 +450,7 @@
                     body: JSON.stringify({
                         model: "openai",
                         messages: [
-                            { role: "system", content: "Ты — продвинутый движок сайта РешУтка.ру. Ты умеешь решать любые школьные номера по фото, ссылкам и номерам из учебников. Всегда решай все пункты полностью, в конце давай объяснение. Пиши строго на русском языке, без Markdown и без знаков $." },
+                            { role: "system", content: "Ты — продвинутый движок сайта РешУтка.ру. Ты распознаешь любые школьные задания по фото и решаешь все пункты полностью без исключений. В конце даешь объяснение. Пиши строго на русском языке, без Markdown и без знаков $." },
                             { role: "user", content: userContent }
                         ]
                     })
@@ -463,15 +461,14 @@
 
                 if (reply && reply.length > 5) {
                     textInput.value = "Домашняя работа.\n(РешУтка.ру — " + subject + ", " + gradeClass + (taskNum ? ", №" + taskNum : "") + ")\n\n" + reply.replace(/\*\*/g, "").replace(/\$/g, "");
+                    renderNotebook();
+                    setStatus("Готово! Все пункты с вашего фото успешно решены и записаны в тетрадь.", false);
                 } else {
-                    throw new Error("Пустой ответ");
+                    throw new Error("Пустой ответ от ИИ");
                 }
-                renderNotebook();
-                setStatus("Готово! Решение и объяснение для вашего задания успешно записаны в тетрадь.", false);
             } catch (e) {
-                textInput.value = FALLBACK_SOLUTION;
-                renderNotebook();
-                setStatus("Решение получено из резервной базы РешУтка.ру и записано в тетрадь!", false);
+                alert("Не удалось распознать фото автоматически. Пожалуйста, укажите номер задачи цифрами в поле выше или загрузите фото еще раз.");
+                setStatus("Ошибка при распознавании. Попробуйте указать номер задачи вручную.", true);
             } finally {
                 btn.disabled = false;
             }
