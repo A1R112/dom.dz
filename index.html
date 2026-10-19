@@ -174,10 +174,10 @@
                 }
             });
 
+            // Убрали всплывающее окно (alert), теперь решение вставляется мгновенно без кликов
             document.getElementById('solveWithAiBtn').addEventListener('click', () => {
                 textInput.value = correctSolution;
                 renderNotebook();
-                alert('Решение обновлено на правильное!');
             });
 
             document.getElementById('downloadPngBtn').addEventListener('click', () => {
