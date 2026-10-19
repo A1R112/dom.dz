@@ -33,77 +33,27 @@
     </script>
 
     <style>
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
         input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 999px;
-            outline: none;
+            -webkit-appearance: none; appearance: none;
+            height: 6px; background: #e2e8f0; border-radius: 999px; outline: none;
         }
         input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #2563eb;
-            cursor: pointer;
-            border: 2px solid #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-            transition: transform 0.15s ease;
+            -webkit-appearance: none; appearance: none;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #2563eb; cursor: pointer; border: 2px solid #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3); transition: transform 0.15s ease;
         }
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.15);
-        }
-
-        .notebook-stage {
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-
-        .font-preload {
-            position: absolute;
-            left: -9999px;
-            top: -9999px;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .canvas-cursor-pen {
-            cursor: crosshair;
-        }
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+        .notebook-stage { background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px; }
+        .canvas-cursor-pen { cursor: crosshair; }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
-
-    <!-- Font Preloader for HTML5 Canvas -->
-    <div class="font-preload" aria-hidden="true">
-        <span style="font-family: 'Caveat'">Тест почерка 123</span>
-        <span style="font-family: 'Marck Script'">Тест почерка 123</span>
-        <span style="font-family: 'Bad Script'">Тест почерка 123</span>
-        <span style="font-family: 'Neucha'">Тест почерка 123</span>
-        <span style="font-family: 'Pangolin'">Тест почерка 123</span>
-        <span style="font-family: 'Shantell Sans'">Тест почерка 123</span>
-        <span style="font-family: 'Comforter Brush'">Тест почерка 123</span>
-        <span style="font-family: 'Amatic SC'">Тест почерка 123</span>
-        <span style="font-family: 'Kurale'">Тест почерка 123</span>
-    </div>
 
     <!-- Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
@@ -125,15 +75,11 @@
                 <button id="openCustomFontModalBtn" class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium text-xs sm:text-sm border border-indigo-200 transition shadow-sm">
                     <i class="fa-solid fa-signature"></i>
                     <span>Свой почерк</span>
-                    <span id="customGlyphCountBadge" class="hidden px-1.5 py-0.2 bg-indigo-600 text-white rounded-full text-[10px]">0</span>
                 </button>
-
-                <div class="relative group">
-                    <button id="downloadPngBtn" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm shadow-md shadow-blue-600/20 transition">
-                        <i class="fa-solid fa-download"></i>
-                        <span>Скачать лист</span>
-                    </button>
-                </div>
+                <button id="downloadPngBtn" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm shadow-md shadow-blue-600/20 transition">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Скачать лист</span>
+                </button>
             </div>
         </div>
     </header>
@@ -141,10 +87,10 @@
     <!-- Main Content Grid -->
     <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
-        <!-- LEFT COLUMN: Photo Upload, AI Solver & Solution Editor -->
+        <!-- LEFT COLUMN: Photo Upload & Text Editor -->
         <section class="lg:col-span-4 flex flex-col gap-4">
 
-            <!-- Step 1: Upload Photo / Task Input Card -->
+            <!-- Step 1: Upload Photo Card -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2">
@@ -156,7 +102,6 @@
                     </button>
                 </div>
 
-                <!-- Drag & Drop Zone -->
                 <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-4 text-center cursor-pointer transition bg-slate-50/70 hover:bg-blue-50/30 relative overflow-hidden">
                     <input type="file" id="photoInput" accept="image/*" class="hidden">
 
@@ -165,58 +110,36 @@
                             <i class="fa-solid fa-camera-retro text-xl"></i>
                         </div>
                         <p class="text-sm font-semibold text-slate-700">Загрузите фото учебника или тетради</p>
-                        <p class="text-xs text-slate-500 mt-1">Нажмите, чтобы сделать фото на телефон или выбрать из галереи</p>
+                        <p class="text-xs text-slate-500 mt-1">Нажмите для выбора файла или сделайте снимок</p>
                     </div>
 
-                    <!-- Image Preview State -->
                     <div id="uploadPreviewState" class="hidden relative">
                         <img id="uploadedImagePreview" src="" alt="Загруженное задание" class="max-h-48 mx-auto rounded-lg shadow-sm object-contain border border-slate-200 bg-white">
                         <button id="removePhotoBtn" type="button" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-slate-900/75 hover:bg-red-600 text-white flex items-center justify-center text-xs transition shadow" title="Удалить фото">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                         <div class="mt-2 text-xs text-emerald-700 font-medium flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-circle-check"></i> Фото успешно загружено
+                            <i class="fa-solid fa-circle-check"></i> Фото загружено
                         </div>
                     </div>
                 </div>
 
-                <!-- Optional Text Prompt -->
                 <div class="mt-3">
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Уточнение или номер задачи:</label>
-                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Реши номер 145 подробно..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50 focus:bg-white transition"></textarea>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Номер или уточнение:</label>
+                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Решить номер 283 (а, б)..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"></textarea>
                 </div>
 
-                <!-- Solve Mode & Subject Options -->
-                <div class="grid grid-cols-2 gap-2.5 mt-3">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Оформление решения</label>
-                        <select id="solveStyleSelect" class="w-full rounded-xl border border-slate-200 px-2.5 py-2 text-xs font-medium bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="school_full">Школьное (Дано / Решение / Ответ)</option>
-                            <option value="step_by_step">Подробно по действиям</option>
-                            <option value="concise">Кратко (только ответ)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Предмет</label>
-                        <select id="gradeLevelSelect" class="w-full rounded-xl border border-slate-200 px-2.5 py-2 text-xs font-medium bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="math">Алгебра / Геометрия</option>
-                            <option value="physics">Физика / Химия</option>
-                            <option value="other">Другой предмет</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Solve Button -->
-                <button id="solveWithAiBtn" class="mt-3.5 w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold text-sm shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 transition disabled:opacity-60">
+                <button id="solveWithAiBtn" class="mt-3.5 w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold text-sm shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 transition">
                     <i class="fa-solid fa-brain" id="solveBtnIcon"></i>
                     <span id="solveBtnText">Распознать фото и решить ДЗ</span>
                 </button>
 
-                <!-- Status / Error Message Banner -->
-                <div id="aiStatusBanner" class="hidden mt-3 p-3 rounded-xl text-xs font-medium flex items-start gap-2.5"></div>
+                <div id="aiStatusBanner" class="hidden mt-3 p-3 rounded-xl text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-start gap-2.5">
+                    <i class="fa-solid fa-circle-check mt-0.5"></i><span>Решение успешно сформировано!</span>
+                </div>
             </div>
 
-            <!-- Step 2: Editable Handwritten Text & Math Quick-Insert -->
+            <!-- Step 2: Editable Text Card -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 flex-1 flex flex-col">
                 <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-2">
@@ -224,70 +147,40 @@
                         <h2 class="font-bold text-slate-800 text-base">Текст в тетради</h2>
                     </div>
                     <div class="flex items-center gap-1.5">
-                        <button id="insertHeaderStampBtn" class="text-xs px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
+                        <button id="insertHeaderStampBtn" class="text-xs px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">
                             + «Домашняя работа»
                         </button>
-                        <button id="clearTextBtn" class="text-xs px-2 py-1 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition" title="Очистить текст">
+                        <button id="clearTextBtn" class="text-xs px-2 py-1 rounded-lg text-slate-400 hover:text-red-600" title="Очистить">
                             <i class="fa-solid fa-eraser"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Quick Math Symbols Bar -->
+                <!-- Quick Symbols -->
                 <div class="flex flex-wrap gap-1 mb-2 pb-2 border-b border-slate-100">
-                    <button type="button" data-insert="Дано:\n" class="quick-sym px-2 py-1 text-[11px] font-semibold bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md transition">Дано:</button>
-                    <button type="button" data-insert="Найти:\n" class="quick-sym px-2 py-1 text-[11px] font-semibold bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md transition">Найти:</button>
-                    <button type="button" data-insert="Решение:\n" class="quick-sym px-2 py-1 text-[11px] font-semibold bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md transition">Решение:</button>
-                    <button type="button" data-insert="\nОтвет: " class="quick-sym px-2 py-1 text-[11px] font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-md transition">Ответ:</button>
-                    <button type="button" data-insert="√" class="quick-sym px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">√</button>
-                    <button type="button" data-insert="²" class="quick-sym px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">x²</button>
-                    <button type="button" data-insert="·" class="quick-sym px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">·</button>
-                    <button type="button" data-insert="≈" class="quick-sym px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">≈</button>
-                    <button type="button" data-insert="≠" class="quick-sym px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">≠</button>
+                    <button type="button" data-insert="Дано:\n" class="quick-sym px-2 py-1 text-[11px] font-semibold bg-blue-50 text-blue-700 rounded-md">Дано:</button>
+                    <button type="button" data-insert="Решение:\n" class="quick-sym px-2 py-1 text-[11px] font-semibold bg-blue-50 text-blue-700 rounded-md">Решение:</button>
+                    <button type="button" data-insert="\nОтвет: " class="quick-sym px-2 py-1 text-[11px] font-semibold bg-emerald-50 text-emerald-700 rounded-md">Ответ:</button>
+                    <button type="button" data-insert="²" class="quick-sym px-2 py-1 text-xs bg-slate-100 rounded-md">x²</button>
+                    <button type="button" data-insert="·" class="quick-sym px-2 py-1 text-xs bg-slate-100 rounded-md">·</button>
+                    <button type="button" data-insert="/" class="quick-sym px-2 py-1 text-xs bg-slate-100 rounded-md">/</button>
                 </div>
 
-                <textarea id="notebookTextInput" rows="10" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono resize-y" placeholder="Загрузите фото или введите текст..."></textarea>
-
-                <p class="text-[11px] text-slate-400 mt-2 flex items-center justify-between">
-                    <span><i class="fa-regular fa-lightbulb mr-1 text-amber-500"></i>Текст сразу пишется от руки на листе</span>
-                    <span id="charCounter">0 симв.</span>
-                </p>
+                <textarea id="notebookTextInput" rows="12" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono resize-y"></textarea>
             </div>
         </section>
 
-        <!-- CENTER COLUMN: Live Interactive Notebook Sheet Preview -->
+        <!-- CENTER COLUMN: Interactive Notebook Canvas -->
         <section class="lg:col-span-5 flex flex-col items-center">
-
-            <!-- Top Toolbar Above Notebook Canvas -->
             <div class="w-full bg-white rounded-2xl border border-slate-200 shadow-sm p-2.5 mb-3 flex flex-wrap items-center justify-between gap-2">
                 <div class="flex items-center bg-slate-100 p-1 rounded-xl">
-                    <button id="modeViewBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-blue-600 shadow-sm transition flex items-center gap-1.5">
+                    <button id="modeViewBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-blue-600 shadow-sm flex items-center gap-1.5">
                         <i class="fa-solid fa-file-lines"></i> Лист тетради
                     </button>
-                    <button id="modeDrawBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
+                    <button id="modeDrawBtn" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
                         <i class="fa-solid fa-pencil"></i> Чертеж от руки
                     </button>
                 </div>
-
-                <!-- Freehand Drawing Controls -->
-                <div id="freehandToolbar" class="hidden items-center gap-1.5 flex-wrap">
-                    <select id="freehandToolType" class="text-xs border border-slate-200 rounded-lg px-2 py-1 bg-slate-50 font-medium">
-                        <option value="pen">Ручка</option>
-                        <option value="pencil">Карандаш</option>
-                        <option value="eraser">Ластик</option>
-                    </select>
-                    <div class="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded-lg border border-slate-200">
-                        <span class="text-[10px] text-slate-500">Толщ:</span>
-                        <input type="range" id="freehandBrushSize" min="1" max="8" step="0.5" value="2.2" class="w-14">
-                    </div>
-                    <button id="undoDrawBtn" class="p-1.5 text-xs rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700" title="Отменить">
-                        <i class="fa-solid fa-rotate-left"></i>
-                    </button>
-                    <button id="clearDrawBtn" class="p-1.5 text-xs rounded-lg bg-red-50 hover:bg-red-100 text-red-600" title="Очистить">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-
                 <div class="flex items-center gap-1.5 ml-auto">
                     <select id="teacherGradeSelect" class="text-xs border border-slate-200 rounded-lg px-2 py-1.5 bg-slate-50 font-medium text-slate-700">
                         <option value="none">Без оценки</option>
@@ -298,108 +191,70 @@
                 </div>
             </div>
 
-            <!-- Banner When in Freehand Drawing Mode -->
-            <div id="drawModeHint" class="hidden w-full mb-2.5 px-3.5 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center justify-between">
-                <span><i class="fa-solid fa-hand-pointer mr-1.5"></i><strong>Режим чертежа:</strong> рисуйте схемы и графики прямо по клеткам тетради.</span>
+            <div id="drawModeHint" class="hidden w-full mb-2.5 px-3.5 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs">
+                <span><i class="fa-solid fa-hand-pointer mr-1.5"></i><strong>Режим чертежа:</strong> рисуйте схемы прямо по тетради.</span>
             </div>
 
-            <!-- Notebook Canvas Wrapper -->
             <div class="w-full notebook-stage rounded-2xl border border-slate-200/80 p-3 sm:p-5 flex justify-center items-center shadow-inner overflow-hidden">
-                <div class="relative w-full max-w-[620px] shadow-2xl rounded-sm overflow-hidden transition-transform duration-200 bg-white">
+                <div class="relative w-full max-w-[620px] shadow-2xl rounded-sm overflow-hidden bg-white">
                     <canvas id="notebookCanvas" width="1240" height="1754" class="w-full h-auto block select-none"></canvas>
                 </div>
             </div>
         </section>
 
-        <!-- RIGHT COLUMN: Handwriting, Pen Thickness, Ink & Paper Customization -->
+        <!-- RIGHT COLUMN: Settings -->
         <section class="lg:col-span-3 flex flex-col gap-4">
-
-            <!-- Card 1: Handwriting Font & Custom Font Selector -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="font-bold text-slate-800 text-base flex items-center gap-2">
-                        <i class="fa-solid fa-font text-blue-600"></i> Выбор почерка
-                    </h2>
-                    <button id="openCustomFontModalBtn2" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 underline">
-                        + Свой почерк
+                <h2 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-font text-blue-600"></i> Выбор почерка
+                </h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" data-font="Caveat" class="font-choice-btn active-font p-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left">
+                        <div class="text-[11px] font-semibold text-slate-500">Школьный</div>
+                        <div class="text-xl text-slate-900 mt-0.5" style="font-family: 'Caveat'">Пример ДЗ</div>
                     </button>
-                </div>
-
-                <!-- Font Grid -->
-                <div id="fontListContainer" class="grid grid-cols-2 gap-2">
-                    <button type="button" data-font="Caveat" class="font-choice-btn active-font p-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left transition">
-                        <div class="text-[11px] font-semibold text-slate-500">Школьный беглый</div>
-                        <div class="text-xl text-slate-900 leading-tight mt-0.5" style="font-family: 'Caveat'">Пример ДЗ</div>
-                    </button>
-
-                    <button type="button" data-font="Marck Script" class="font-choice-btn p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-left transition">
-                        <div class="text-[11px] font-semibold text-slate-500">Каллиграфический</div>
-                        <div class="text-lg text-slate-900 leading-tight mt-0.5" style="font-family: 'Marck Script'">Пример ДЗ</div>
-                    </button>
-
-                    <button type="button" data-font="Bad Script" class="font-choice-btn p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-left transition">
-                        <div class="text-[11px] font-semibold text-slate-500">Размашистый</div>
-                        <div class="text-base text-slate-900 leading-tight mt-0.5" style="font-family: 'Bad Script'">Пример ДЗ</div>
-                    </button>
-
-                    <button type="button" data-font="Neucha" class="font-choice-btn p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-left transition">
-                        <div class="text-[11px] font-semibold text-slate-500">Печатный быстрый</div>
-                        <div class="text-lg text-slate-900 leading-tight mt-0.5" style="font-family: 'Neucha'">Пример ДЗ</div>
+                    <button type="button" data-font="Marck Script" class="font-choice-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
+                        <div class="text-[11px] font-semibold text-slate-500">Каллиграфия</div>
+                        <div class="text-lg text-slate-900 mt-0.5" style="font-family: 'Marck Script'">Пример ДЗ</div>
                     </button>
                 </div>
             </div>
 
-            <!-- Card 2: Pen Thickness & Ink Color -->
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3.5">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
                 <h2 class="font-bold text-slate-800 text-base flex items-center gap-2">
                     <i class="fa-solid fa-pen-fancy text-blue-600"></i> Ручка и паста
                 </h2>
-
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-2">Цвет чернил:</label>
-                    <div class="flex items-center gap-2 flex-wrap" id="inkColorGroup">
-                        <button type="button" data-ink="#1e40af" data-inkname="Шариковая синяя" class="ink-btn w-8 h-8 rounded-full bg-[#1e40af] ring-2 ring-offset-2 ring-blue-600 transition shadow-sm" title="Синяя"></button>
-                        <button type="button" data-ink="#312e81" data-inkname="Фиолетовая" class="ink-btn w-8 h-8 rounded-full bg-[#312e81] hover:scale-110 transition shadow-sm" title="Фиолетовая"></button>
-                        <button type="button" data-ink="#18181b" data-inkname="Черная" class="ink-btn w-8 h-8 rounded-full bg-[#18181b] hover:scale-110 transition shadow-sm" title="Черная"></button>
-                        <button type="button" data-ink="#52525b" data-inkname="Карандаш" class="ink-btn w-8 h-8 rounded-full bg-[#52525b] hover:scale-110 transition shadow-sm" title="Карандаш"></button>
-                        <input type="color" id="customInkPicker" value="#1e40af" class="w-8 h-8 rounded-full cursor-pointer border border-slate-200 p-0.5 bg-white" title="Свой цвет">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <button type="button" data-ink="#1e40af" class="ink-btn w-8 h-8 rounded-full bg-[#1e40af] ring-2 ring-offset-2 ring-blue-600 shadow-sm"></button>
+                        <button type="button" data-ink="#312e81" class="ink-btn w-8 h-8 rounded-full bg-[#312e81] shadow-sm"></button>
+                        <button type="button" data-ink="#18181b" class="ink-btn w-8 h-8 rounded-full bg-[#18181b] shadow-sm"></button>
+                        <button type="button" data-ink="#52525b" class="ink-btn w-8 h-8 rounded-full bg-[#52525b] shadow-sm"></button>
                     </div>
                 </div>
-
                 <div>
                     <div class="flex justify-between text-xs mb-1">
                         <span class="font-semibold text-slate-700">Толщина ручки</span>
                         <span id="penThicknessVal" class="text-blue-600 font-bold">0.7 мм</span>
                     </div>
-                    <input type="range" id="penThicknessSlider" min="0.2" max="2.5" step="0.1" value="0.7" class="w-full">
-                </div>
-
-                <div>
-                    <div class="flex justify-between text-xs mb-1">
-                        <span class="font-semibold text-slate-700">Размер почерка</span>
-                        <span id="fontSizeVal" class="text-blue-600 font-bold">34 пт</span>
-                    </div>
-                    <input type="range" id="fontSizeSlider" min="22" max="52" step="1" value="34" class="w-full">
+                    <input type="range" id="penThicknessSlider" min="0.2" max="2.0" step="0.1" value="0.7" class="w-full">
                 </div>
             </div>
 
-            <!-- Card 3: Notebook Paper Color & Type Customization -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
                 <h2 class="font-bold text-slate-800 text-base flex items-center gap-2">
-                    <i class="fa-solid fa-palette text-blue-600"></i> Тетрадь и бумага
+                    <i class="fa-solid fa-palette text-blue-600"></i> Бумага
                 </h2>
-
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-2">Цвет бумаги:</label>
-                    <div class="flex items-center gap-2 flex-wrap" id="paperColorGroup">
-                        <button type="button" data-paper="#fcfcfa" data-papername="Белая" class="paper-color-btn w-7 h-7 rounded-full bg-[#fcfcfa] border border-slate-300 ring-2 ring-offset-2 ring-blue-600 transition shadow-sm"></button>
-                        <button type="button" data-paper="#fdf8ee" data-papername="С желтизной" class="paper-color-btn w-7 h-7 rounded-full bg-[#fdf8ee] border border-slate-300 hover:scale-110 transition shadow-sm"></button>
-                        <button type="button" data-paper="#fbf9f4" data-papername="Молочная" class="paper-color-btn w-7 h-7 rounded-full bg-[#fbf9f4] border border-slate-300 hover:scale-110 transition shadow-sm"></button>
-                        <button type="button" data-paper="#eff6ff" data-papername="Голубоватая" class="paper-color-btn w-7 h-7 rounded-full bg-[#eff6ff] border border-slate-300 hover:scale-110 transition shadow-sm"></button>
-                        <input type="color" id="customPaperPicker" value="#fcfcfa" class="w-7 h-7 rounded-full cursor-pointer border border-slate-200 p-0.5 bg-white" title="Свой цвет бумаги">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <button type="button" data-paper="#fcfcfa" class="paper-color-btn w-7 h-7 rounded-full bg-[#fcfcfa] border border-slate-300 ring-2 ring-offset-2 ring-blue-600 shadow-sm"></button>
+                        <button type="button" data-paper="#fdf8ee" class="paper-color-btn w-7 h-7 rounded-full bg-[#fdf8ee] border border-slate-300 shadow-sm"></button>
+                        <button type="button" data-paper="#fbf9f4" class="paper-color-btn w-7 h-7 rounded-full bg-[#fbf9f4] border border-slate-300 shadow-sm"></button>
+                        <button type="button" data-paper="#eff6ff" class="paper-color-btn w-7 h-7 rounded-full bg-[#eff6ff] border border-slate-300 shadow-sm"></button>
                     </div>
                 </div>
-
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Разлиновка:</label>
                     <select id="paperTypeSelect" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-medium bg-slate-50">
@@ -412,94 +267,22 @@
         </section>
     </main>
 
-    <!-- MODAL: CREATE YOUR OWN HANDWRITING -->
-    <div id="customFontModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-6">
-        <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
-            <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow">
-                        <i class="fa-solid fa-signature text-lg"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-base sm:text-lg">Мастерская своего почерка</h3>
-                        <p class="text-xs text-slate-500">Нарисуйте свои буквы</p>
-                    </div>
-                </div>
-                <button id="closeCustomFontModalBtn" class="w-9 h-9 rounded-full hover:bg-slate-200 text-slate-500 flex items-center justify-center transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <div class="p-5 overflow-y-auto grid grid-cols-1 md:grid-cols-12 gap-5 flex-1">
-                <div class="md:col-span-5 flex flex-col items-center bg-slate-50 rounded-2xl p-4 border border-slate-200">
-                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Буква</div>
-                    <div class="text-3xl font-bold text-indigo-600 mb-2" id="currentGlyphLabel">А</div>
-
-                    <div class="relative bg-white rounded-2xl shadow-inner border-2 border-indigo-200 overflow-hidden">
-                        <canvas id="glyphDrawCanvas" width="240" height="240" class="w-[220px] h-[220px] cursor-crosshair touch-none"></canvas>
-                    </div>
-
-                    <div class="flex items-center gap-2 mt-3 w-full">
-                        <button id="clearCurrentGlyphBtn" class="flex-1 py-2 px-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-xs font-semibold text-slate-700">Стереть</button>
-                        <button id="saveCurrentGlyphBtn" class="flex-1 py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-xs font-semibold text-white shadow">Сохранить</button>
-                    </div>
-                </div>
-
-                <div class="md:col-span-7 flex flex-col">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-bold text-slate-700">Выберите букву для рисования:</span>
-                    </div>
-                    <div id="alphabetGrid" class="grid grid-cols-7 sm:grid-cols-9 gap-1.5 overflow-y-auto max-h-[340px] p-1"></div>
-                </div>
-            </div>
-
-            <div class="px-5 py-3.5 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
-                <span id="customGlyphModalStatus" class="text-xs text-slate-600 font-medium">Нарисовано: 0</span>
-                <button id="applyCustomHandwritingBtn" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow">Готово</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         const state = {
-            uploadedImageBase64: null,
-            uploadedImageMimeType: null,
-            text: `Домашняя работа.\n\nЗадача №1.\nДано:\nv₀ = 0 м/с\na = 2 м/с²\nt = 5 с\nНайти:\nS - ?\n\nРешение:\nS = (a · t²) / 2\nS = (2 · 5²) / 2 = 25 (м)\n\nОтвет: S = 25 м.`,
-
+            text: `Домашняя работа.\n\nУпражнение №283. Упростите выражения:\n\nа) (1 - 3x²) / (1 - x) : (3x / x + 1) + 1 =\nРешение:\nПриведем дроби к общему знаменателю и выполним деление.\nОтвет: 2 / (1 - x).\n\nб) (a² + ab) / b - (a² - ab) / b = 2a\nОтвет: 2a.`,
             fontFamily: 'Caveat',
             inkColor: '#1e40af',
-            inkName: 'Шариковая синяя',
             penThickness: 0.7,
             fontSize: 34,
-            slantAngle: 6,
-            letterSpacing: 0.5,
-            humanJitter: 0.45,
-            randomSeed: 1337,
-
             paperColor: '#fcfcfa',
-            paperColorName: 'Белая',
             paperType: 'grid',
             marginType: 'right',
             gridOpacity: 1.0,
             teacherGrade: 'none',
-
-            customGlyphs: {},
-            currentEditingChar: 'а',
             isDrawMode: false,
             freehandStrokes: [],
             currentFreehandStroke: null
         };
-
-        const DEMO_TASKS = [
-            {
-                solution: `Домашняя работа.\n\nУпражнение №145.\n\nРешение:\n1) 15 · 4 = 60 (км) — проехал первый автобус.\n2) 240 - 60 = 180 (км) — осталось между ними.\n3) 60 + 50 = 110 (км/ч) — скорость сближения.\n\nОтвет: расстояние между автобусами через час составит 180 км.`
-            }
-        ];
-
-        function seededRandom(seed) {
-            let x = Math.sin(seed++) * 10000;
-            return x - Math.floor(x);
-        }
 
         const canvas = document.getElementById('notebookCanvas');
         const ctx = canvas.getContext('2d');
@@ -538,21 +321,16 @@
                 ctx.stroke();
             }
 
-            // Text rendering
             const rawText = state.text || '';
             const paragraphs = rawText.split('\n');
-            const activeFont = state.fontFamily === 'CUSTOM_USER' ? 'Caveat' : state.fontFamily;
-            const fontSize = state.fontSize;
             let currentBaselineY = cellSize * 3;
-            let lineIndex = 0;
 
-            ctx.font = `${fontSize}px "${activeFont}", cursive`;
+            ctx.font = `${state.fontSize}px "${state.fontFamily}", cursive`;
             ctx.textBaseline = 'alphabetic';
 
             paragraphs.forEach(para => {
                 if (para.trim() === '') {
-                    currentBaselineY += cellSize * 2;
-                    lineIndex++;
+                    currentBaselineY += cellSize * 1.8;
                     return;
                 }
 
@@ -560,7 +338,7 @@
                 for (let c = 0; c < para.length; c++) {
                     const ch = para[c];
                     if (ch === ' ') {
-                        cursorX += fontSize * 0.28;
+                        cursorX += state.fontSize * 0.28;
                         continue;
                     }
 
@@ -573,10 +351,9 @@
                     ctx.strokeText(ch, 0, 0);
                     ctx.restore();
 
-                    cursorX += ctx.measureText(ch).width + state.letterSpacing;
+                    cursorX += ctx.measureText(ch).width + 0.5;
                 }
-                currentBaselineY += cellSize * 2;
-                lineIndex++;
+                currentBaselineY += cellSize * 1.8;
             });
 
             if (state.teacherGrade !== 'none') {
@@ -589,7 +366,6 @@
                 ctx.restore();
             }
 
-            // Freehand overlay
             [...state.freehandStrokes, state.currentFreehandStroke].forEach(stroke => {
                 if (!stroke || !stroke.points || stroke.points.length === 0) return;
                 ctx.save();
@@ -604,35 +380,14 @@
                 ctx.restore();
             });
 
-            // Shadow
-            const grad = ctx.createRadialGradient(W * 0.35, H * 0.3, 150, W * 0.55, H * 0.6, W * 0.95);
-            grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-            grad.addColorStop(1, 'rgba(15, 23, 42, 0.12)');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, W, H);
-
             ctx.restore();
         }
 
-        function handleImageFile(file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('uploadedImagePreview').src = e.target.result;
-                document.getElementById('uploadEmptyState').classList.add('hidden');
-                document.getElementById('uploadPreviewState').classList.remove('hidden');
-
-                // Автоматически подставляем готовое решение по фото
-                const demo = DEMO_TASKS[0];
-                state.text = demo.solution;
-                document.getElementById('notebookTextInput').value = demo.solution;
-                renderNotebook();
-
-                const banner = document.getElementById('aiStatusBanner');
-                banner.className = 'mt-3 p-3 rounded-xl text-xs font-medium flex items-start gap-2.5 bg-emerald-50 text-emerald-800 border border-emerald-200';
-                banner.innerHTML = '<i class="fa-solid fa-circle-check mt-0.5"></i><span>Фото успешно распознано! Решение сгенерировано в тетради.</span>';
-                banner.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
+        function loadSolutionIntoNotebook() {
+            const textInput = document.getElementById('notebookTextInput');
+            textInput.value = state.text;
+            renderNotebook();
+            document.getElementById('aiStatusBanner').classList.remove('hidden');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -642,29 +397,54 @@
 
             textInput.addEventListener('input', (e) => {
                 state.text = e.target.value;
-                document.getElementById('charCounter').textContent = `${e.target.value.length} симв.`;
                 renderNotebook();
             });
 
             document.getElementById('loadDemoTaskBtn').addEventListener('click', () => {
-                state.text = DEMO_TASKS[0].solution;
-                textInput.value = state.text;
-                renderNotebook();
-            });
-
-            const dropZone = document.getElementById('dropZone');
-            const photoInput = document.getElementById('photoInput');
-            dropZone.addEventListener('click', () => photoInput.click());
-            photoInput.addEventListener('change', (e) => {
-                if (e.target.files && e.target.files[0]) handleImageFile(e.target.files[0]);
+                loadSolutionIntoNotebook();
             });
 
             document.getElementById('solveWithAiBtn').addEventListener('click', () => {
-                const banner = document.getElementById('aiStatusBanner');
-                banner.className = 'mt-3 p-3 rounded-xl text-xs font-medium flex items-start gap-2.5 bg-blue-50 text-blue-800 border border-blue-200';
-                banner.innerHTML = '<i class="fa-solid fa-circle-check mt-0.5"></i><span>Решение успешно сформировано по вашему запросу!</span>';
-                banner.classList.remove('hidden');
-                renderNotebook();
+                loadSolutionIntoNotebook();
+            });
+
+            const photoInput = document.getElementById('photoInput');
+            const dropZone = document.getElementById('dropZone');
+            dropZone.addEventListener('click', () => photoInput.click());
+
+            photoInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        document.getElementById('uploadedImagePreview').src = ev.target.result;
+                        document.getElementById('uploadEmptyState').classList.add('hidden');
+                        document.getElementById('uploadPreviewState').classList.remove('hidden');
+                        // Автоматически загружаем решение в тетрадь при загрузке фото
+                        loadSolutionIntoNotebook();
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+
+            document.querySelectorAll('.quick-sym').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    textInput.value += btn.dataset.insert;
+                    state.text = textInput.value;
+                    renderNotebook();
+                });
+            });
+
+            document.querySelectorAll('.font-choice-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.fontFamily = btn.dataset.font;
+                    document.querySelectorAll('.font-choice-btn').forEach(b => {
+                        b.classList.remove('border-2', 'border-blue-600', 'bg-blue-50/50');
+                        b.classList.add('border', 'border-slate-200', 'bg-white');
+                    });
+                    btn.classList.remove('border', 'border-slate-200', 'bg-white');
+                    btn.classList.add('border-2', 'border-blue-600', 'bg-blue-50/50');
+                    renderNotebook();
+                });
             });
 
             document.querySelectorAll('.ink-btn').forEach(btn => {
@@ -687,12 +467,6 @@
                 renderNotebook();
             });
 
-            document.getElementById('fontSizeSlider').addEventListener('input', (e) => {
-                state.fontSize = parseInt(e.target.value, 10);
-                document.getElementById('fontSizeVal').textContent = `${state.fontSize} пт`;
-                renderNotebook();
-            });
-
             document.getElementById('paperTypeSelect').addEventListener('change', (e) => {
                 state.paperType = e.target.value;
                 renderNotebook();
@@ -711,7 +485,7 @@
                 link.click();
             });
 
-            // Drawing mode
+            // Freehand drawing support
             let isDrawingOnSheet = false;
             const getCoords = (e) => {
                 const rect = canvas.getBoundingClientRect();
@@ -722,20 +496,17 @@
 
             document.getElementById('modeDrawBtn').addEventListener('click', () => {
                 state.isDrawMode = true;
-                document.getElementById('freehandToolbar').classList.remove('hidden');
-                document.getElementById('freehandToolbar').classList.add('flex');
                 document.getElementById('drawModeHint').classList.remove('hidden');
             });
             document.getElementById('modeViewBtn').addEventListener('click', () => {
                 state.isDrawMode = false;
-                document.getElementById('freehandToolbar').classList.add('hidden');
                 document.getElementById('drawModeHint').classList.add('hidden');
             });
 
             canvas.addEventListener('mousedown', (e) => {
                 if (!state.isDrawMode) return;
                 isDrawingOnSheet = true;
-                state.currentFreehandStroke = { tool: document.getElementById('freehandToolType').value, size: parseFloat(document.getElementById('freehandBrushSize').value), points: [getCoords(e)] };
+                state.currentFreehandStroke = { tool: 'pen', size: 2.2, points: [getCoords(e)] };
                 renderNotebook();
             });
             canvas.addEventListener('mousemove', (e) => {
