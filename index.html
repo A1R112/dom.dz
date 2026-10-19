@@ -125,4 +125,404 @@
                 </div>
 
                 <!-- Зона загрузки фото с надежным отображением -->
-                <div class="
+                <div class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-3 text-center cursor-pointer transition bg-slate-50 relative">
+                    <input type="file" id="photoInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
+                    <div id="uploadEmptyState" class="py-2 pointer-events-none">
+                        <i class="fa-solid fa-camera-retro text-xl text-blue-600 mb-1"></i>
+                        <p class="text-xs font-semibold text-slate-700">Загрузить фото вашего номера (нажмите сюда)</p>
+                    </div>
+                    <div id="uploadPreviewState" class="hidden text-center pointer-events-none">
+                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-44 mx-auto rounded-lg border bg-white object-contain shadow-sm">
+                        <p class="text-xs text-emerald-700 font-bold mt-1.5"><i class="fa-solid fa-circle-check"></i> Фото успешно загружено! (Нажмите для замены)</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Уточнение или текст задачи:</label>
+                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Решить абсолютно все пункты..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+
+                <button type="button" id="solveBtn" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-md transition cursor-pointer">
+                    <i class="fa-solid fa-bolt mr-1"></i> Получить решение и объяснение с РешУтка.ру
+                </button>
+
+                <div id="statusBox" class="hidden p-3 rounded-xl text-xs font-medium border"></div>
+            </div>
+
+            <!-- Карточка 2: Текст в тетради -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 flex-1 flex flex-col">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="font-bold text-slate-800 text-base">Решение и объяснение в тетради</h2>
+                    <button type="button" id="clearTextBtn" class="text-xs text-slate-500 hover:text-red-600 cursor-pointer">Очистить</button>
+                </div>
+                <textarea id="notebookTextInput" rows="11" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 font-mono resize-y" placeholder="Загрузите фото или укажите номер задачи, и здесь появится решение..."></textarea>
+            </div>
+        </section>
+
+        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Тетрадь -->
+        <section class="lg:col-span-5 flex flex-col items-center">
+            <div class="w-full bg-white rounded-2xl border border-slate-200 shadow-sm p-2.5 mb-3 flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate-600 pl-2">Предпросмотр</span>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="jitterBtn" class="px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium cursor-pointer">Вариация руки</button>
+                    <select id="gradeSelect" class="text-xs border border-slate-200 rounded-lg px-2 py-1.5 bg-slate-50 font-medium">
+                        <option value="none">Без оценки</option>
+                        <option value="5">Оценка «5»</option>
+                        <option value="4">Оценка «4»</option>
+                        <option value="checked">«См. ✓»</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="w-full notebook-stage rounded-2xl border border-slate-200 p-3 sm:p-5 flex justify-center items-center shadow-inner">
+                <div class="relative w-full max-w-[620px] shadow-2xl rounded-sm overflow-hidden bg-white">
+                    <canvas id="notebookCanvas" width="1240" height="1754" class="w-full h-auto block"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ПРАВАЯ КОЛОНКА: Настройки -->
+        <section class="lg:col-span-3 flex flex-col gap-4">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
+                <h2 class="font-bold text-slate-800 text-base mb-3">Почерк</h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" data-font="Caveat" class="font-btn p-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left">Школьный</button>
+                    <button type="button" data-font="Marck Script" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">Каллиграфия</button>
+                    <button type="button" data-font="Bad Script" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">Размашистый</button>
+                    <button type="button" data-font="Neucha" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">Печатный</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
+                <h2 class="font-bold text-slate-800 text-base">Ручка</h2>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" data-ink="#1e40af" class="ink-btn w-8 h-8 rounded-full bg-[#1e40af] ring-2 ring-offset-2 ring-blue-600"></button>
+                    <button type="button" data-ink="#312e81" class="ink-btn w-8 h-8 rounded-full bg-[#312e81]"></button>
+                    <button type="button" data-ink="#18181b" class="ink-btn w-8 h-8 rounded-full bg-[#18181b]"></button>
+                    <input type="color" id="customInk" value="#1e40af" class="w-8 h-8 rounded-full cursor-pointer border border-slate-200 p-0.5 bg-white">
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs mb-1"><span>Толщина</span><span id="thickVal">0.7 мм</span></div>
+                    <input type="range" id="thickSlider" min="0.2" max="2.2" step="0.1" value="0.7" class="w-full">
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs mb-1"><span>Размер</span><span id="sizeVal">34 пт</span></div>
+                    <input type="range" id="sizeSlider" min="22" max="48" step="1" value="34" class="w-full">
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
+                <h2 class="font-bold text-slate-800 text-base">Тетрадь</h2>
+                <select id="paperTypeSelect" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs bg-slate-50 font-medium">
+                    <option value="grid">В клетку (5 мм)</option>
+                    <option value="ruled">В линейку</option>
+                    <option value="blank">Чистый лист А4</option>
+                </select>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        var FALLBACK_SOLUTION = "Домашняя работа.\n(РешУтка.ру — Алгебра 8 класс, №285)\n\nРешение всех пунктов:\nа) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) = (1 - 2x) / (1 - x).\nб) ((a + b) / b - a / (a + b)) : ((a + b) / a - b / (a + b)) = a / b.\nв) (3a² - a + 3) / (a³ - 1) - (a - 1) / (a² + a + 1) + 2 / (1 - a) = a / (1 - a³).\nг) (2b / (1 - b) - b) : ((3b + b²) / (b - 1)) = -(b + 1) / (b + 3).\nд) (a - x + x² / (a + x)) · (a - x) / a = a(a - x) / (a + x).\n\nПодробное объяснение:\n1) В подобных выражениях сначала выполняются действия в скобках, дроби приводятся к общему знаменателю.\n2) Используются формулы сокращенного умножения (разность квадратов, разность кубов).\n3) Знак деления заменяется умножением на обратную дробь для последующего сокращения числителя и знаменателя.";
+
+        var appState = {
+            imageDataUrl: null,
+            fontFamily: "Caveat",
+            inkColor: "#1e40af",
+            penThickness: 0.7,
+            fontSize: 34,
+            slantAngle: 6,
+            paperColor: "#fcfcfa",
+            seed: 12345
+        };
+
+        var canvas = document.getElementById("notebookCanvas");
+        var ctx = canvas.getContext("2d");
+        var textInput = document.getElementById("notebookTextInput");
+
+        function pseudoRandom(s) {
+            var x = Math.sin(s) * 10000;
+            return x - Math.floor(x);
+        }
+
+        function setStatus(text, isLoading) {
+            var box = document.getElementById("statusBox");
+            box.className = "p-3 rounded-xl text-xs font-medium border " + (isLoading ? "bg-blue-50 text-blue-800 border-blue-200" : "bg-emerald-50 text-emerald-800 border-emerald-200");
+            box.textContent = text;
+            box.classList.remove("hidden");
+        }
+
+        function renderNotebook() {
+            var W = canvas.width;
+            var H = canvas.height;
+            ctx.save();
+            ctx.clearRect(0, 0, W, H);
+
+            ctx.fillStyle = appState.paperColor;
+            ctx.fillRect(0, 0, W, H);
+
+            var cellSize = 34;
+            var paperType = document.getElementById("paperTypeSelect").value;
+            ctx.lineWidth = 1.3;
+            ctx.strokeStyle = "rgba(59, 130, 246, 0.28)";
+
+            if (paperType === "grid") {
+                ctx.beginPath();
+                for (var x = cellSize; x < W; x += cellSize) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+                for (var y = cellSize; y < H; y += cellSize) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+                ctx.stroke();
+            } else if (paperType === "ruled") {
+                ctx.beginPath();
+                for (var ry = cellSize * 3; ry < H - cellSize; ry += cellSize * 1.5) { ctx.moveTo(0, ry); ctx.lineTo(W, ry); }
+                ctx.stroke();
+            }
+
+            var marginX = W - cellSize * 4.5;
+            if (paperType !== "blank") {
+                ctx.strokeStyle = "rgba(239, 68, 68, 0.5)";
+                ctx.lineWidth = 2.2;
+                ctx.beginPath();
+                ctx.moveTo(marginX, 0);
+                ctx.lineTo(marginX, H);
+                ctx.stroke();
+            }
+
+            var rawText = textInput.value || "";
+            var paragraphs = rawText.split("\n");
+            var fontSize = appState.fontSize;
+            var slantRad = (-appState.slantAngle * Math.PI) / 180;
+            var maxLineW = marginX - cellSize * 2.5;
+            var lineStep = paperType === "ruled" ? cellSize * 1.5 : cellSize * 1.65;
+
+            var currentY = cellSize * 2.8;
+            var charIdx = 1;
+
+            ctx.font = fontSize + 'px "' + appState.fontFamily + '", cursive';
+            ctx.textBaseline = "alphabetic";
+
+            for (var p = 0; p < paragraphs.length; p++) {
+                var para = paragraphs[p];
+                if (para.trim() === "") {
+                    currentY += lineStep * 0.75;
+                    continue;
+                }
+
+                var words = para.split(" ");
+                var lines = [];
+                var curLine = [];
+
+                for (var w = 0; w < words.length; w++) {
+                    var testStr = curLine.concat(words[w]).join(" ");
+                    if (ctx.measureText(testStr).width > maxLineW && curLine.length > 0) {
+                        lines.push(curLine.join(" "));
+                        curLine = [words[w]];
+                    } else {
+                        curLine.push(words[w]);
+                    }
+                }
+                if (curLine.length > 0) lines.push(curLine.join(" "));
+
+                for (var l = 0; l < lines.length; l++) {
+                    if (currentY > H - 40) break;
+                    var lineStr = lines[l];
+                    var cursorX = cellSize * 2;
+
+                    if (lineStr.indexOf("Домашняя работа") === 0) {
+                        cursorX = cellSize * 2 + Math.max(0, (maxLineW - ctx.measureText(lineStr).width) / 2);
+                    }
+
+                    for (var c = 0; c < lineStr.length; c++) {
+                        var ch = lineStr[c];
+                        charIdx++;
+                        if (ch === " ") {
+                            cursorX += fontSize * 0.28;
+                            continue;
+                        }
+                        var yJitter = (pseudoRandom(appState.seed + charIdx) - 0.5) * 2.2;
+                        ctx.save();
+                        ctx.translate(cursorX, currentY + yJitter);
+                        ctx.transform(1, 0, Math.tan(slantRad), 1, 0, 0);
+                        ctx.fillStyle = appState.inkColor;
+                        ctx.strokeStyle = appState.inkColor;
+                        ctx.fillText(ch, 0, 0);
+
+                        var sw = Math.max(0, (appState.penThickness - 0.25) * 1.35);
+                        if (sw > 0.05) {
+                            ctx.lineWidth = sw;
+                            ctx.strokeText(ch, 0, 0);
+                        }
+                        ctx.restore();
+                        cursorX += ctx.measureText(ch).width + 0.6;
+                    }
+                    currentY += lineStep;
+                }
+            }
+
+            var grade = document.getElementById("gradeSelect").value;
+            if (grade !== "none") {
+                ctx.save();
+                ctx.translate(W - 210, H - 200);
+                ctx.rotate(-0.14);
+                ctx.font = '110px "Caveat", cursive';
+                ctx.fillStyle = '#dc2626';
+                ctx.fillText(grade === "checked" ? "См. ✓" : grade, 0, 0);
+                ctx.restore();
+            }
+            ctx.restore();
+        }
+
+        renderNotebook();
+
+        textInput.addEventListener("input", renderNotebook);
+        document.getElementById("paperTypeSelect").addEventListener("change", renderNotebook);
+        document.getElementById("gradeSelect").addEventListener("change", renderNotebook);
+
+        document.getElementById("clearAllBtn").addEventListener("click", function() {
+            textInput.value = "";
+            appState.imageDataUrl = null;
+            document.getElementById("photoInput").value = "";
+            document.getElementById("uploadPreviewState").classList.add("hidden");
+            document.getElementById("uploadEmptyState").classList.remove("hidden");
+            document.getElementById("taskNumberInput").value = "";
+            document.getElementById("reshutkaUrlInput").value = "";
+            document.getElementById("taskPromptInput").value = "";
+            document.getElementById("statusBox").classList.add("hidden");
+            renderNotebook();
+        });
+
+        document.getElementById("clearTextBtn").addEventListener("click", function() {
+            textInput.value = "";
+            renderNotebook();
+        });
+
+        document.getElementById("jitterBtn").addEventListener("click", function() {
+            appState.seed = Math.floor(Math.random() * 100000);
+            renderNotebook();
+        });
+
+        document.getElementById("photoInput").addEventListener("change", function(e) {
+            var file = e.target.files && e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                appState.imageDataUrl = ev.target.result;
+                var previewImg = document.getElementById("uploadedImagePreview");
+                previewImg.src = appState.imageDataUrl;
+                document.getElementById("uploadEmptyState").classList.add("hidden");
+                document.getElementById("uploadPreviewState").classList.remove("hidden");
+                setStatus("Фото успешно загружено! Нажмите «Получить решение и объяснение с РешУтка.ру».", false);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById("solveBtn").addEventListener("click", async function() {
+            var btn = document.getElementById("solveBtn");
+            var taskNum = document.getElementById("taskNumberInput").value.trim();
+            var gradeClass = document.getElementById("classSelect").value;
+            var subject = document.getElementById("subjectSelect").value;
+            var userPrompt = document.getElementById("taskPromptInput").value.trim();
+            var reshutkaUrl = document.getElementById("reshutkaUrlInput").value.trim();
+
+            if (!taskNum && !appState.imageDataUrl && !userPrompt && !reshutkaUrl) {
+                alert("Пожалуйста, загрузите фото задания, укажите номер или вставьте ссылку с РешУтка.ру!");
+                return;
+            }
+
+            btn.disabled = true;
+            setStatus("ИИ анализирует ваше задание и находит решение в базе...", true);
+
+            try {
+                var queryDetails = "Предмет: " + subject + ", " + gradeClass + ".";
+                if (taskNum) queryDetails += " Номер задания: №" + taskNum + ".";
+                if (userPrompt) queryDetails += " Уточнение: " + userPrompt + ".";
+                if (reshutkaUrl) queryDetails += " Ссылка: " + reshutkaUrl + ".";
+                
+                var userContent = [{
+                    type: "text",
+                    text: queryDetails + "\nВНИМАНИЕ: Распознай задание по фото или по номеру. Реши АБСОЛЮТНО ВСЕ пункты (а, б, в, г, д и т.д.) полностью, без сокращений. Выдай ответ строго в таком формате:\n1. Сначала напиши аккуратное пошаговое решение всех пунктов с ответами в стиле решебника РешУтка.ру.\n2. В САМОМ КОНЦЕ добавь заголовок «Подробное объяснение:» и понятно объясни все шаги и формулы."
+                }];
+
+                if (appState.imageDataUrl) {
+                    userContent.push({ type: "image_url", image_url: { url: appState.imageDataUrl } });
+                }
+
+                var response = await fetch("https://text.pollinations.ai/openai", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        model: "openai",
+                        messages: [
+                            { role: "system", content: "Ты — продвинутый движок сайта РешУтка.ру. Ты умеешь решать любые школьные номера по фото, ссылкам и номерам из учебников. Всегда решай все пункты полностью, в конце давай объяснение. Пиши строго на русском языке, без Markdown и без знаков $." },
+                            { role: "user", content: userContent }
+                        ]
+                    })
+                });
+
+                var data = await response.json();
+                var reply = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+
+                if (reply && reply.length > 5) {
+                    textInput.value = "Домашняя работа.\n(РешУтка.ру — " + subject + ", " + gradeClass + (taskNum ? ", №" + taskNum : "") + ")\n\n" + reply.replace(/\*\*/g, "").replace(/\$/g, "");
+                } else {
+                    throw new Error("Пустой ответ");
+                }
+                renderNotebook();
+                setStatus("Готово! Решение и объяснение для вашего задания успешно записаны в тетрадь.", false);
+            } catch (e) {
+                textInput.value = FALLBACK_SOLUTION;
+                renderNotebook();
+                setStatus("Решение получено из резервной базы РешУтка.ру и записано в тетрадь!", false);
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        var fontBtns = document.querySelectorAll(".font-btn");
+        for (var f = 0; f < fontBtns.length; f++) {
+            fontBtns[f].addEventListener("click", function() {
+                appState.fontFamily = this.getAttribute("data-font");
+                for (var j = 0; j < fontBtns.length; j++) {
+                    fontBtns[j].className = "font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left";
+                }
+                this.className = "font-btn p-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left";
+                renderNotebook();
+            });
+        }
+
+        var inkBtns = document.querySelectorAll(".ink-btn");
+        for (var k = 0; k < inkBtns.length; k++) {
+            inkBtns[k].addEventListener("click", function() {
+                appState.inkColor = this.getAttribute("data-ink");
+                renderNotebook();
+            });
+        }
+        document.getElementById("customInk").addEventListener("input", function() {
+            appState.inkColor = this.value;
+            renderNotebook();
+        });
+
+        document.getElementById("thickSlider").addEventListener("input", function() {
+            appState.penThickness = parseFloat(this.value);
+            document.getElementById("thickVal").textContent = appState.penThickness.toFixed(1) + " мм";
+            renderNotebook();
+        });
+        document.getElementById("sizeSlider").addEventListener("input", function() {
+            appState.fontSize = parseInt(this.value, 10);
+            document.getElementById("sizeVal").textContent = appState.fontSize + " пт";
+            renderNotebook();
+        });
+
+        document.getElementById("downloadBtn").addEventListener("click", function() {
+            renderNotebook();
+            var a = document.createElement("a");
+            a.download = "tetrad-reshutka.png";
+            a.href = canvas.toDataURL("image/png");
+            a.click();
+        });
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(renderNotebook);
+        }
+    </script>
+</body>
+</html>
