@@ -124,7 +124,7 @@
                     </div>
                 </div>
 
-                <!-- Зона загрузки фото с надежным выводом превью -->
+                <!-- Зона загрузки фото -->
                 <label for="photoInput" class="block border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-3 text-center cursor-pointer transition bg-slate-50 relative">
                     <input type="file" id="photoInput" accept="image/*" class="hidden">
                     <div id="uploadEmptyState" class="py-2">
@@ -132,7 +132,7 @@
                         <p class="text-xs font-semibold text-slate-700">Загрузить фото вашего номера (нажмите сюда)</p>
                     </div>
                     <div id="uploadPreviewState" class="hidden text-center">
-                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-44 mx-auto rounded-lg border bg-white object-contain shadow-sm">
+                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-40 mx-auto rounded-lg border bg-white object-contain shadow-sm">
                         <p class="text-xs text-emerald-700 font-bold mt-1.5"><i class="fa-solid fa-circle-check"></i> Фото успешно загружено! (Нажмите для замены)</p>
                     </div>
                 </label>
@@ -175,7 +175,7 @@
             </div>
 
             <div class="w-full notebook-stage rounded-2xl border border-slate-200 p-3 sm:p-5 flex justify-center items-center shadow-inner">
-                <div class="relative w-full max-w-[620px] shadow-2xl rounded-sm overflow-hidden bg-white">
+                <div class="relative W-full max-w-[620px] shadow-2xl rounded-sm overflow-hidden bg-white">
                     <canvas id="notebookCanvas" width="1240" height="1754" class="w-full h-auto block"></canvas>
                 </div>
             </div>
