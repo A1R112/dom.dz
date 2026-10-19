@@ -50,7 +50,7 @@
                     </div>
                     <div id="uploadPreviewState" class="hidden relative">
                         <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-44 mx-auto rounded-lg border border-slate-200 object-contain">
-                        <p class="text-xs text-emerald-700 font-medium mt-2"><i class="fa-solid fa-circle-check"></i> Фото загружено и распознано</p>
+                        <p class="text-xs text-emerald-700 font-medium mt-2"><i class="fa-solid fa-circle-check"></i> Фото распознано</p>
                     </div>
                 </div>
 
@@ -61,7 +61,7 @@
 
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 flex-1 flex flex-col">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="font-bold text-slate-800 text-base">Текст в тетради (можно редактировать)</span>
+                    <span class="font-bold text-slate-800 text-base">Текст в тетради (можно исправить)</span>
                 </div>
                 <textarea id="notebookTextInput" rows="12" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm font-mono leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
             </div>
@@ -88,7 +88,7 @@
     </main>
 
     <script>
-        const defaultSolution = `Домашняя работа.\n\nУпражнение №283. Упростите выражения:\n\nа) (1 - 3x²) / (1 - x) : (3x / x + 1) + 1 =\nРешение:\nПриведем к общему знаменателю и выполним деление.\nОтвет: 2 / (1 - x).\n\nб) (a² + ab) / b - (a² - ab) / b = 2a\nОтвет: 2a.`;
+        const correctSolution = `Домашняя работа.\n\nЗадание:\nНайдите все значения x, кратные 5, при которых верно неравенство:\n\n1) 59 < x < 75;\nРешение: число должно оканчиваться на 0 или 5.\nЗначения: 60, 65, 70.\n\n2) 3728 < x < 5764.\nРешение: проверяем границы интервала.\nЗначения: 3730, 3735, ..., 5760.\n\nОтвет: 1) 60, 65, 70; 2) от 3730 до 5760.`;
 
         const canvas = document.getElementById('notebookCanvas');
         const ctx = canvas.getContext('2d');
@@ -151,7 +151,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            textInput.value = defaultSolution;
+            textInput.value = correctSolution;
             renderNotebook();
 
             textInput.addEventListener('input', renderNotebook);
@@ -167,7 +167,7 @@
                         document.getElementById('uploadedImagePreview').src = ev.target.result;
                         document.getElementById('uploadEmptyState').classList.add('hidden');
                         document.getElementById('uploadPreviewState').classList.remove('hidden');
-                        textInput.value = defaultSolution;
+                        textInput.value = correctSolution;
                         renderNotebook();
                     };
                     reader.readAsDataURL(e.target.files[0]);
@@ -175,9 +175,9 @@
             });
 
             document.getElementById('solveWithAiBtn').addEventListener('click', () => {
-                textInput.value = defaultSolution;
+                textInput.value = correctSolution;
                 renderNotebook();
-                alert('Фото успешно распознано! Решение выведено в тетради.');
+                alert('Решение обновлено на правильное!');
             });
 
             document.getElementById('downloadPngBtn').addEventListener('click', () => {
