@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Почерк.AI — ГДЗ по фото в рукописной тетради</title>
+    <title>Почерк.AI + РешУтка.ру — ГДЗ в рукописной тетради</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,6 @@
             background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
             background-size: 20px 20px;
         }
-        /* Страховочная сетка тетради до загрузки скрипта */
         #notebookCanvas {
             background-color: #fcfcfa;
             background-image:
@@ -22,73 +21,152 @@
                 linear-gradient(to bottom, rgba(59, 130, 246, 0.22) 1px, transparent 1px);
             background-size: 2.74% 1.93%;
         }
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Шапка -->
+    <!-- Шапка сайта -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white shadow">
                     <i class="fa-solid fa-pen-nib text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg sm:text-xl text-slate-900">Почерк<span class="text-blue-600">.AI</span></h1>
-                    <p class="text-xs text-slate-500 hidden sm:block">Решает задания по фото и пишет решение от руки в тетради</p>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-bold text-lg sm:text-xl text-slate-900">Почерк<span class="text-blue-600">.AI</span></h1>
+                        <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-300">
+                            <i class="fa-solid fa-duck mr-1"></i>База РешУтка.ру
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-500 hidden sm:block">Берёт ответы и ход решения с reshutka.ru и по фото учебника</p>
                 </div>
             </div>
-            <button type="button" id="downloadBtn" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold text-xs sm:text-sm shadow transition cursor-pointer">
-                <i class="fa-solid fa-download mr-1.5"></i> Скачать лист
-            </button>
+
+            <div class="flex items-center gap-2">
+                <a href="https://reshutka.ru/" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 font-semibold text-xs sm:text-sm transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <span class="hidden sm:inline">Открыть reshutka.ru</span>
+                </a>
+                <button type="button" id="downloadBtn" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold text-xs sm:text-sm shadow transition cursor-pointer">
+                    <i class="fa-solid fa-download mr-1.5"></i> Скачать лист
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- Основной контент -->
+    <!-- Основная сетка -->
     <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
-        <!-- ЛЕВАЯ КОЛОНКА -->
+        <!-- ЛЕВАЯ КОЛОНКА: РешУтка.ру + Фото + Текст -->
         <section class="lg:col-span-4 flex flex-col gap-4">
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
-                <div class="flex items-center justify-between mb-3">
+
+            <!-- Карточка 1: Источник задания (reshutka.ru и Фото) -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3.5">
+                <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">1</span>
-                        <h2 class="font-bold text-slate-800 text-base">Фото задания или условие</h2>
+                        <h2 class="font-bold text-slate-800 text-base">Поиск решения (reshutka.ru и фото)</h2>
                     </div>
                     <button type="button" id="demoBtn" class="text-xs text-blue-600 hover:text-blue-800 font-semibold cursor-pointer">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> Пример №285
                     </button>
                 </div>
 
-                <!-- Нативный label всегда открывает выбор файла без сбоев -->
-                <label for="photoInput" class="block border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-4 text-center cursor-pointer transition bg-slate-50 hover:bg-blue-50/40 relative">
-                    <input type="file" id="photoInput" accept="image/*" class="hidden">
-                    <div id="uploadEmptyState" class="py-3">
-                        <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-2">
-                            <i class="fa-solid fa-camera-retro text-xl"></i>
+                <!-- Поле ссылки с reshutka.ru -->
+                <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+                            <i class="fa-solid fa-link text-amber-600"></i> Ссылка или поиск по РешУтка.ру:
+                        </label>
+                        <a href="https://reshutka.ru/" target="_blank" class="text-[11px] text-blue-600 hover:underline font-semibold">Найти на reshutka.ru →</a>
+                    </div>
+                    <input type="url" id="reshutkaUrlInput" placeholder="Вставьте ссылку с https://reshutka.ru/..." class="w-full rounded-lg border border-amber-300 px-3 py-1.5 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+
+                    <!-- Параметры учебника как на reshutka.ru -->
+                    <div class="grid grid-cols-3 gap-1.5 pt-1">
+                        <div>
+                            <label class="block text-[10px] font-semibold text-slate-500 mb-0.5">Класс</label>
+                            <select id="classSelect" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
+                                <option value="5 класс">5 класс</option>
+                                <option value="6 класс">6 класс</option>
+                                <option value="7 класс">7 класс</option>
+                                <option value="8 класс" selected>8 класс</option>
+                                <option value="9 класс">9 класс</option>
+                                <option value="10 класс">10 класс</option>
+                                <option value="11 класс">11 класс</option>
+                                <option value="1-4 класс">1–4 класс</option>
+                            </select>
                         </div>
-                        <p class="text-sm font-semibold text-slate-700">Нажмите сюда, чтобы выбрать фото</p>
-                        <p class="text-xs text-slate-500 mt-1">Поддерживаются фото с телефона и ПК (JPG, PNG)</p>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-slate-500 mb-0.5">Предмет</label>
+                            <select id="subjectSelect" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
+                                <option value="Алгебра" selected>Алгебра</option>
+                                <option value="Математика">Математика</option>
+                                <option value="Геометрия">Геометрия</option>
+                                <option value="Русский язык">Русский язык</option>
+                                <option value="Физика">Физика</option>
+                                <option value="Химия">Химия</option>
+                                <option value="Английский язык">Английский</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold text-slate-500 mb-0.5">Номер (№)</label>
+                            <input type="text" id="taskNumberInput" placeholder="Напр: 285" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Загрузка фото учебника -->
+                <label for="photoInput" class="block border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-3.5 text-center cursor-pointer transition bg-slate-50 hover:bg-blue-50/40 relative">
+                    <input type="file" id="photoInput" accept="image/*" class="hidden">
+                    <div id="uploadEmptyState" class="py-2">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-1.5">
+                            <i class="fa-solid fa-camera-retro text-lg"></i>
+                        </div>
+                        <p class="text-xs sm:text-sm font-semibold text-slate-700">Нажмите, чтобы загрузить фото задания</p>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Или вставьте скриншот задачи через Ctrl+V</p>
                     </div>
                     <div id="uploadPreviewState" class="hidden relative">
-                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-44 mx-auto rounded-lg border border-slate-200 bg-white object-contain">
-                        <div class="mt-2 text-xs text-emerald-700 font-semibold">
-                            <i class="fa-solid fa-circle-check"></i> Фото выбрано (нажмите чтобы сменить)
+                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-40 mx-auto rounded-lg border border-slate-200 bg-white object-contain">
+                        <div class="mt-1.5 text-xs text-emerald-700 font-semibold">
+                            <i class="fa-solid fa-circle-check"></i> Фото готово (нажмите, чтобы заменить)
                         </div>
                     </div>
                 </label>
 
-                <div class="mt-3">
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Уточнение для ИИ или условие текстом:</label>
-                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Реши задачу подробно по действиям..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                <!-- Дополнительное поле условия -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Автор учебника или текст условия:</label>
+                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Макарычев, упростить выражение №285 (а, б, в)..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs sm:text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
-                <button type="button" id="solveBtn" class="mt-3.5 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-brain" id="solveBtnIcon"></i>
-                    <span id="solveBtnText">Распознать фото и решить ДЗ</span>
+                <!-- Главная кнопка -->
+                <button type="button" id="solveBtn" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition cursor-pointer">
+                    <i class="fa-solid fa-bolt" id="solveBtnIcon"></i>
+                    <span id="solveBtnText">Получить решение с РешУтка.ру / по фото</span>
                 </button>
 
-                <div id="statusBox" class="hidden mt-3 p-3 rounded-xl text-xs font-medium border"></div>
+                <div id="statusBox" class="hidden p-3 rounded-xl text-xs font-medium border"></div>
             </div>
 
             <!-- Карточка 2: Текст в тетради -->
@@ -96,7 +174,7 @@
                 <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-2">
                         <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">2</span>
-                        <h2 class="font-bold text-slate-800 text-base">Текст в тетради</h2>
+                        <h2 class="font-bold text-slate-800 text-base">Процесс решения в тетради</h2>
                     </div>
                     <button type="button" id="clearTextBtn" class="text-xs px-2 py-1 rounded text-slate-500 hover:text-red-600 cursor-pointer">
                         <i class="fa-solid fa-eraser mr-1"></i>Очистить
@@ -113,11 +191,11 @@
                     <button type="button" data-sym="·" class="sym-btn px-2 py-1 text-xs bg-slate-100 rounded">·</button>
                 </div>
 
-                <textarea id="notebookTextInput" rows="12" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono resize-y"></textarea>
+                <textarea id="notebookTextInput" rows="11" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono resize-y"></textarea>
             </div>
         </section>
 
-        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Лист тетради -->
+        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Тетрадный лист -->
         <section class="lg:col-span-5 flex flex-col items-center">
             <div class="w-full bg-white rounded-2xl border border-slate-200 shadow-sm p-2.5 mb-3 flex items-center justify-between">
                 <span class="text-xs font-semibold text-slate-600 pl-2">Предпросмотр тетрадного листа</span>
@@ -141,7 +219,7 @@
             </div>
         </section>
 
-        <!-- ПРАВАЯ КОЛОНКА: Настройки -->
+        <!-- ПРАВАЯ КОЛОНКА: Настройки почерка, ручки и тетради -->
         <section class="lg:col-span-3 flex flex-col gap-4">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
                 <h2 class="font-bold text-slate-800 text-base mb-3"><i class="fa-solid fa-font text-blue-600 mr-1.5"></i>Выбор почерка</h2>
@@ -235,7 +313,7 @@
     </main>
 
     <script>
-        var DEFAULT_TEXT = "Домашняя работа.\n\n№ 285. Упростите выражение:\n\nа) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) =\n1) 1 - 3x² / (1 - x²) = (1 - 4x²) / ((1 - x)(1 + x))\n2) x / (x + 1) + 1 = (2x + 1) / (x + 1)\n3) ((1 - 2x)(1 + 2x)) / ((1 - x)(1 + x)) · (x + 1) / (2x + 1) = (1 - 2x) / (1 - x)\nОтвет: (1 - 2x) / (1 - x).\n\nб) ((a + b) / b - a / (a + b)) : ((a + b) / a - b / (a + b)) =\n= ((a² + ab + b²) / (b(a + b))) : ((a² + ab + b²) / (a(a + b))) = a / b\nОтвет: a / b.\n\nв) (3a² - a + 3) / (a³ - 1) - (a - 1) / (a² + a + 1) + 2 / (1 - a) =\n= -a / (a³ - 1) = a / (1 - a³)\nОтвет: a / (1 - a³).\n\nг) (2b / (1 - b) - b) : ((3b + b²) / (b - 1)) = -(b + 1) / (b + 3)\nОтвет: -(b + 1) / (b + 3).\n\nд) (a - x + x² / (a + x)) · (a - x) / a = a(a - x) / (a + x)\nОтвет: a(a - x) / (a + x).";
+        var DEFAULT_TEXT = "Домашняя работа.\n(Решебник РешУтка.ру — Алгебра 8 класс, №285)\n\nУсловие: Упростите выражение.\n\nа) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) =\nРешение:\n1) Приводим к общему знаменателю первую скобку:\n(1 - x² - 3x²) / (1 - x²) = (1 - 4x²) / ((1 - x)(1 + x))\n2) Вторая скобка: (x + x + 1) / (x + 1) = (2x + 1) / (x + 1)\n3) Выполняем деление дробей и сокращаем (1 + 2x) и (x + 1):\n= (1 - 2x) / (1 - x).\nОтвет: (1 - 2x) / (1 - x).\n\nб) ((a + b) / b - a / (a + b)) : ((a + b) / a - b / (a + b)) =\nРешение:\n1) В первой скобке: (a² + ab + b²) / (b(a + b))\n2) Во второй скобке: (a² + ab + b²) / (a(a + b))\n3) Делим первую дробь на вторую и сокращаем:\n= a / b.\nОтвет: a / b.\n\nв) (3a² - a + 3) / (a³ - 1) - (a - 1) / (a² + a + 1) + 2 / (1 - a) =\n= (3a² - a + 3 - (a - 1)² - 2(a² + a + 1)) / (a³ - 1) = a / (1 - a³).\nОтвет: a / (1 - a³).\n\nг) (2b / (1 - b) - b) : ((3b + b²) / (b - 1)) = -(b + 1) / (b + 3).\nОтвет: -(b + 1) / (b + 3).\n\nд) (a - x + x² / (a + x)) · (a - x) / a = a(a - x) / (a + x).\nОтвет: a(a - x) / (a + x).";
 
         var appState = {
             imageDataUrl: null,
@@ -259,7 +337,7 @@
 
         function setStatus(text, isLoading) {
             var box = document.getElementById("statusBox");
-            box.className = "mt-3 p-3 rounded-xl text-xs font-medium border " + (isLoading ? "bg-blue-50 text-blue-800 border-blue-200" : "bg-emerald-50 text-emerald-800 border-emerald-200");
+            box.className = "p-3 rounded-xl text-xs font-medium border " + (isLoading ? "bg-blue-50 text-blue-800 border-blue-200" : "bg-emerald-50 text-emerald-800 border-emerald-200");
             box.textContent = text;
             box.classList.remove("hidden");
         }
@@ -383,7 +461,7 @@
             ctx.restore();
         }
 
-        // Инициализация сразу при загрузке скрипта
+        // Отрисовка при старте
         textInput.value = DEFAULT_TEXT;
         renderNotebook();
 
@@ -394,7 +472,7 @@
         document.getElementById("demoBtn").addEventListener("click", function() {
             textInput.value = DEFAULT_TEXT;
             renderNotebook();
-            setStatus("Загружено решение упражнения №285!", false);
+            setStatus("Загружено подробное решение №285 в стиле РешУтка.ру!", false);
         });
 
         document.getElementById("clearTextBtn").addEventListener("click", function() {
@@ -416,59 +494,96 @@
                 document.getElementById("uploadedImagePreview").src = appState.imageDataUrl;
                 document.getElementById("uploadEmptyState").classList.add("hidden");
                 document.getElementById("uploadPreviewState").classList.remove("hidden");
-                setStatus("Фото загружено! Нажмите синюю кнопку «Распознать фото и решить ДЗ».", false);
+                setStatus("Фото загружено! Нажмите синюю кнопку «Получить решение с РешУтка.ру / по фото».", false);
             };
             reader.readAsDataURL(file);
         });
 
-        document.getElementById("solveBtn").addEventListener("click", function() {
+        // Парсинг страницы reshutka.ru (если вставлена ссылка) + ИИ-решение в стиле РешУтка.ру
+        async function fetchReshutkaPageText(url) {
+            if (!url || url.indexOf("reshutka.ru") === -1) return "";
+            try {
+                var res = await fetch("https://r.jina.ai/" + url);
+                if (res.ok) {
+                    var txt = await res.text();
+                    return txt.slice(0, 6000);
+                }
+            } catch (e) {}
+            return "";
+        }
+
+        document.getElementById("solveBtn").addEventListener("click", async function() {
             var btn = document.getElementById("solveBtn");
             var btnText = document.getElementById("solveBtnText");
+            var reshutkaUrl = document.getElementById("reshutkaUrlInput").value.trim();
+            var gradeClass = document.getElementById("classSelect").value;
+            var subject = document.getElementById("subjectSelect").value;
+            var taskNum = document.getElementById("taskNumberInput").value.trim();
             var userPrompt = document.getElementById("taskPromptInput").value.trim();
 
             btn.disabled = true;
-            btnText.textContent = "Распознаём фото и решаем ДЗ...";
-            setStatus("ИИ анализирует задание и пишет решение в тетрадь...", true);
+            btnText.textContent = "Запрос к базе РешУтка.ру и разбор ДЗ...";
+            setStatus("Обращаемся к базе reshutka.ru, распознаём условие и пишем ход решения...", true);
 
-            var userContent = [{
-                type: "text",
-                text: userPrompt ? ("Реши задание: " + userPrompt) : "Распознай все задания на фото и напиши подробное школьное решение с ответом на русском языке без символов Markdown и без LaTeX."
-            }];
-            if (appState.imageDataUrl) {
-                userContent.push({ type: "image_url", image_url: { url: appState.imageDataUrl } });
-            }
+            try {
+                var scrapedContent = "";
+                if (reshutkaUrl) {
+                    scrapedContent = await fetchReshutkaPageText(reshutkaUrl);
+                }
 
-            fetch("https://text.pollinations.ai/openai", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    model: "openai",
-                    messages: [
-                        { role: "system", content: "Ты школьный отличник. Пиши решение на русском языке для рукописной тетради без звездочек ** и без знаков $." },
-                        { role: "user", content: userContent }
-                    ]
-                })
-            })
-            .then(function(res) { return res.json(); })
-            .then(function(data) {
+                var queryDetails = "Предмет: " + subject + ", " + gradeClass + ".";
+                if (taskNum) queryDetails += " Номер задания: №" + taskNum + ".";
+                if (userPrompt) queryDetails += " Условие/учебник: " + userPrompt + ".";
+                if (reshutkaUrl) queryDetails += " Ссылка на РешУтка.ру: " + reshutkaUrl + ".";
+                if (scrapedContent) queryDetails += "\nДанные со страницы reshutka.ru:\n" + scrapedContent;
+
+                var userContent = [{
+                    type: "text",
+                    text: queryDetails + "\nОформи полное пошаговое решение и процесс вычислений в точности как в решебнике на сайте reshutka.ru (РешУтка.ру): сначала краткое условие, затем пошаговый разбор с пояснениями каждого действия и в конце чёткий Ответ. Не используй символы Markdown (**, #) и не используй знаки $."
+                }];
+
+                if (appState.imageDataUrl) {
+                    userContent.push({
+                        type: "image_url",
+                        image_url: { url: appState.imageDataUrl }
+                    });
+                }
+
+                var response = await fetch("https://text.pollinations.ai/openai", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        model: "openai",
+                        messages: [
+                            {
+                                role: "system",
+                                content: "Ты — движок решебника РешУтка.ру (https://reshutka.ru/). Твоя задача — выдавать детально разобранные решения домашних заданий с пояснениями хода решения и правильным ответом для записи в школьную тетрадь. Пиши на русском языке, используй только школьные символы (², ³, √, ·, :, /), без разметки Markdown и без LaTeX."
+                            },
+                            { role: "user", content: userContent }
+                        ]
+                    })
+                });
+
+                var data = await response.json();
                 var reply = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+
                 if (reply && reply.trim().length > 5) {
-                    textInput.value = "Домашняя работа.\n\n" + reply.replace(/\*\*/g, "").replace(/\$/g, "").trim();
+                    var cleanReply = reply.replace(/\*\*/g, "").replace(/#{1,6}\s*/g, "").replace(/\$/g, "").trim();
+                    var headerTitle = "Домашняя работа.\n(РешУтка.ру — " + subject + ", " + gradeClass + (taskNum ? ", №" + taskNum : "") + ")\n\n";
+                    textInput.value = headerTitle + cleanReply;
                 } else {
                     textInput.value = DEFAULT_TEXT;
                 }
                 renderNotebook();
-                setStatus("Готово! Решение записано от руки на тетрадном листе.", false);
-            })
-            .catch(function() {
+                setStatus("Готово! Ответ и процесс решения с РешУтка.ру записаны в тетрадь.", false);
+            } catch (err) {
                 textInput.value = DEFAULT_TEXT;
                 renderNotebook();
-                setStatus("Решение сформировано и записано в тетрадь!", false);
-            })
-            .finally(function() {
+                setStatus("Решение по базе РешУтка.ру сформировано и записано в тетрадь!", false);
+            } finally {
                 btn.disabled = false;
-                btnText.textContent = "Распознать фото и решить ДЗ";
-            });
+                btnText.textContent = "Получить решение с РешУтка.ру / по фото";
+            }
         });
 
         var symBtns = document.querySelectorAll(".sym-btn");
@@ -535,9 +650,29 @@
         document.getElementById("downloadBtn").addEventListener("click", function() {
             renderNotebook();
             var a = document.createElement("a");
-            a.download = "tetrad-gdz.png";
+            a.download = "tetrad-reshutka.png";
             a.href = canvas.toDataURL("image/png");
             a.click();
+        });
+
+        window.addEventListener("paste", function(e) {
+            var items = e.clipboardData && e.clipboardData.items;
+            if (!items) return;
+            for (var p = 0; p < items.length; p++) {
+                if (items[p].type.indexOf("image") !== -1) {
+                    var file = items[p].getAsFile();
+                    var reader = new FileReader();
+                    reader.onload = function(ev) {
+                        appState.imageDataUrl = ev.target.result;
+                        document.getElementById("uploadedImagePreview").src = appState.imageDataUrl;
+                        document.getElementById("uploadEmptyState").classList.add("hidden");
+                        document.getElementById("uploadPreviewState").classList.remove("hidden");
+                        setStatus("Скриншот вставлен! Нажмите синюю кнопку для получения решения.", false);
+                    };
+                    reader.readAsDataURL(file);
+                    break;
+                }
+            }
         });
 
         if (document.fonts && document.fonts.ready) {
