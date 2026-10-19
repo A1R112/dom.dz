@@ -55,20 +55,20 @@
                     <div class="flex items-center gap-2">
                         <h1 class="font-bold text-lg sm:text-xl text-slate-900">Почерк<span class="text-blue-600">.AI</span></h1>
                         <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-300">
-                            <i class="fa-solid fa-duck mr-1"></i>База РешУтка.ру
+                            База РешУтка.ру
                         </span>
                     </div>
-                    <p class="text-xs text-slate-500 hidden sm:block">Берёт ответы и ход решения с reshutka.ru и по фото учебника</p>
+                    <p class="text-xs text-slate-500 hidden sm:block">Решебник с reshutka.ru в рукописной тетради</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2">
                 <a href="https://reshutka.ru/" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 font-semibold text-xs sm:text-sm transition flex items-center gap-1.5">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    <span class="hidden sm:inline">Открыть reshutka.ru</span>
+                    <span class="hidden sm:inline">reshutka.ru</span>
                 </a>
                 <button type="button" id="downloadBtn" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold text-xs sm:text-sm shadow transition cursor-pointer">
-                    <i class="fa-solid fa-download mr-1.5"></i> Скачать лист
+                    <i class="fa-solid fa-download mr-1.5"></i> Скачать
                 </button>
             </div>
         </div>
@@ -77,35 +77,27 @@
     <!-- Основная сетка -->
     <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
-        <!-- ЛЕВАЯ КОЛОНКА: РешУтка.ру + Фото + Текст -->
+        <!-- ЛЕВАЯ КОЛОНКА -->
         <section class="lg:col-span-4 flex flex-col gap-4">
 
-            <!-- Карточка 1: Источник задания (reshutka.ru и Фото) -->
+            <!-- Карточка 1: Источник задания -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3.5">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">1</span>
-                        <h2 class="font-bold text-slate-800 text-base">Поиск решения (reshutka.ru и фото)</h2>
+                        <h2 class="font-bold text-slate-800 text-base">Поиск решения</h2>
                     </div>
                     <button type="button" id="demoBtn" class="text-xs text-blue-600 hover:text-blue-800 font-semibold cursor-pointer">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> Пример №285
                     </button>
                 </div>
 
-                <!-- Поле ссылки с reshutka.ru -->
                 <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3 space-y-2">
-                    <div class="flex items-center justify-between">
-                        <label class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
-                            <i class="fa-solid fa-link text-amber-600"></i> Ссылка или поиск по РешУтка.ру:
-                        </label>
-                        <a href="https://reshutka.ru/" target="_blank" class="text-[11px] text-blue-600 hover:underline font-semibold">Найти на reshutka.ru →</a>
-                    </div>
-                    <input type="url" id="reshutkaUrlInput" placeholder="Вставьте ссылку с https://reshutka.ru/..." class="w-full rounded-lg border border-amber-300 px-3 py-1.5 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <label class="block text-xs font-bold text-amber-900">Ссылка с reshutka.ru или параметры:</label>
+                    <input type="url" id="reshutkaUrlInput" placeholder="https://reshutka.ru/..." class="w-full rounded-lg border border-amber-300 px-3 py-1.5 text-xs bg-white">
 
-                    <!-- Параметры учебника как на reshutka.ru -->
                     <div class="grid grid-cols-3 gap-1.5 pt-1">
                         <div>
-                            <label class="block text-[10px] font-semibold text-slate-500 mb-0.5">Класс</label>
                             <select id="classSelect" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
                                 <option value="5 класс">5 класс</option>
                                 <option value="6 класс">6 класс</option>
@@ -114,56 +106,37 @@
                                 <option value="9 класс">9 класс</option>
                                 <option value="10 класс">10 класс</option>
                                 <option value="11 класс">11 класс</option>
-                                <option value="1-4 класс">1–4 класс</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold text-slate-500 mb-0.5">Предмет</label>
                             <select id="subjectSelect" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
                                 <option value="Алгебра" selected>Алгебра</option>
                                 <option value="Математика">Математика</option>
                                 <option value="Геометрия">Геометрия</option>
-                                <option value="Русский язык">Русский язык</option>
                                 <option value="Физика">Физика</option>
                                 <option value="Химия">Химия</option>
-                                <option value="Английский язык">Английский</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold text-slate-500 mb-0.5">Номер (№)</label>
-                            <input type="text" id="taskNumberInput" placeholder="Напр: 285" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
+                            <input type="text" id="taskNumberInput" placeholder="№ 285" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
                         </div>
                     </div>
                 </div>
 
-                <!-- Загрузка фото учебника -->
-                <label for="photoInput" class="block border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-3.5 text-center cursor-pointer transition bg-slate-50 hover:bg-blue-50/40 relative">
+                <label for="photoInput" class="block border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-3 text-center cursor-pointer transition bg-slate-50 relative">
                     <input type="file" id="photoInput" accept="image/*" class="hidden">
                     <div id="uploadEmptyState" class="py-2">
-                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-1.5">
-                            <i class="fa-solid fa-camera-retro text-lg"></i>
-                        </div>
-                        <p class="text-xs sm:text-sm font-semibold text-slate-700">Нажмите, чтобы загрузить фото задания</p>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Или вставьте скриншот задачи через Ctrl+V</p>
+                        <i class="fa-solid fa-camera-retro text-xl text-blue-600 mb-1"></i>
+                        <p class="text-xs font-semibold text-slate-700">Загрузить фото учебника</p>
                     </div>
                     <div id="uploadPreviewState" class="hidden relative">
-                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-40 mx-auto rounded-lg border border-slate-200 bg-white object-contain">
-                        <div class="mt-1.5 text-xs text-emerald-700 font-semibold">
-                            <i class="fa-solid fa-circle-check"></i> Фото готово (нажмите, чтобы заменить)
-                        </div>
+                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-32 mx-auto rounded-lg border bg-white object-contain">
+                        <p class="text-[11px] text-emerald-700 font-semibold mt-1">Фото загружено</p>
                     </div>
                 </label>
 
-                <!-- Дополнительное поле условия -->
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Автор учебника или текст условия:</label>
-                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Макарычев, упростить выражение №285 (а, б, в)..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs sm:text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                </div>
-
-                <!-- Главная кнопка -->
-                <button type="button" id="solveBtn" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-bolt" id="solveBtnIcon"></i>
-                    <span id="solveBtnText">Получить решение с РешУтка.ру / по фото</span>
+                <button type="button" id="solveBtn" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-md transition cursor-pointer">
+                    <i class="fa-solid fa-bolt mr-1"></i> Получить решение
                 </button>
 
                 <div id="statusBox" class="hidden p-3 rounded-xl text-xs font-medium border"></div>
@@ -172,37 +145,19 @@
             <!-- Карточка 2: Текст в тетради -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 flex-1 flex flex-col">
                 <div class="flex items-center justify-between mb-2">
-                    <div class="flex items-center gap-2">
-                        <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">2</span>
-                        <h2 class="font-bold text-slate-800 text-base">Процесс решения в тетради</h2>
-                    </div>
-                    <button type="button" id="clearTextBtn" class="text-xs px-2 py-1 rounded text-slate-500 hover:text-red-600 cursor-pointer">
-                        <i class="fa-solid fa-eraser mr-1"></i>Очистить
-                    </button>
+                    <h2 class="font-bold text-slate-800 text-base">Процесс решения в тетради</h2>
+                    <button type="button" id="clearTextBtn" class="text-xs text-slate-500 hover:text-red-600 cursor-pointer">Очистить</button>
                 </div>
-
-                <div class="flex flex-wrap gap-1 mb-2 pb-2 border-b border-slate-100">
-                    <button type="button" data-sym="Дано:\n" class="sym-btn px-2 py-1 text-[11px] font-semibold bg-blue-50 text-blue-700 rounded">Дано:</button>
-                    <button type="button" data-sym="Решение:\n" class="sym-btn px-2 py-1 text-[11px] font-semibold bg-blue-50 text-blue-700 rounded">Решение:</button>
-                    <button type="button" data-sym="\nОтвет: " class="sym-btn px-2 py-1 text-[11px] font-semibold bg-emerald-50 text-emerald-700 rounded">Ответ:</button>
-                    <button type="button" data-sym="²" class="sym-btn px-2 py-1 text-xs bg-slate-100 rounded">x²</button>
-                    <button type="button" data-sym="³" class="sym-btn px-2 py-1 text-xs bg-slate-100 rounded">x³</button>
-                    <button type="button" data-sym="√" class="sym-btn px-2 py-1 text-xs bg-slate-100 rounded">√</button>
-                    <button type="button" data-sym="·" class="sym-btn px-2 py-1 text-xs bg-slate-100 rounded">·</button>
-                </div>
-
-                <textarea id="notebookTextInput" rows="11" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono resize-y"></textarea>
+                <textarea id="notebookTextInput" rows="11" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 font-mono resize-y"></textarea>
             </div>
         </section>
 
-        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Тетрадный лист -->
+        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Тетрадь -->
         <section class="lg:col-span-5 flex flex-col items-center">
             <div class="w-full bg-white rounded-2xl border border-slate-200 shadow-sm p-2.5 mb-3 flex items-center justify-between">
-                <span class="text-xs font-semibold text-slate-600 pl-2">Предпросмотр тетрадного листа</span>
+                <span class="text-xs font-semibold text-slate-600 pl-2">Предпросмотр</span>
                 <div class="flex items-center gap-2">
-                    <button type="button" id="jitterBtn" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium cursor-pointer">
-                        <i class="fa-solid fa-dice mr-1"></i>Вариация руки
-                    </button>
+                    <button type="button" id="jitterBtn" class="px-2.5 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium cursor-pointer">Вариация руки</button>
                     <select id="gradeSelect" class="text-xs border border-slate-200 rounded-lg px-2 py-1.5 bg-slate-50 font-medium">
                         <option value="none">Без оценки</option>
                         <option value="5">Оценка «5»</option>
@@ -219,101 +174,49 @@
             </div>
         </section>
 
-        <!-- ПРАВАЯ КОЛОНКА: Настройки почерка, ручки и тетради -->
+        <!-- ПРАВАЯ КОЛОНКА: Настройки -->
         <section class="lg:col-span-3 flex flex-col gap-4">
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
-                <h2 class="font-bold text-slate-800 text-base mb-3"><i class="fa-solid fa-font text-blue-600 mr-1.5"></i>Выбор почерка</h2>
+                <h2 class="font-bold text-slate-800 text-base mb-3">Почерк</h2>
                 <div class="grid grid-cols-2 gap-2">
-                    <button type="button" data-font="Caveat" class="font-btn p-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left">
-                        <div class="text-[11px] font-semibold text-slate-500">Школьный</div>
-                        <div class="text-xl text-slate-900" style="font-family: 'Caveat'">Пример ДЗ</div>
-                    </button>
-                    <button type="button" data-font="Marck Script" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
-                        <div class="text-[11px] font-semibold text-slate-500">Каллиграфия</div>
-                        <div class="text-lg text-slate-900" style="font-family: 'Marck Script'">Пример ДЗ</div>
-                    </button>
-                    <button type="button" data-font="Bad Script" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
-                        <div class="text-[11px] font-semibold text-slate-500">Размашистый</div>
-                        <div class="text-base text-slate-900" style="font-family: 'Bad Script'">Пример ДЗ</div>
-                    </button>
-                    <button type="button" data-font="Neucha" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
-                        <div class="text-[11px] font-semibold text-slate-500">Печатный</div>
-                        <div class="text-lg text-slate-900" style="font-family: 'Neucha'">Пример ДЗ</div>
-                    </button>
-                    <button type="button" data-font="Shantell Sans" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
-                        <div class="text-[11px] font-semibold text-slate-500">Округлый</div>
-                        <div class="text-sm text-slate-900 italic" style="font-family: 'Shantell Sans'">Пример ДЗ</div>
-                    </button>
-                    <button type="button" data-font="Comforter Brush" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
-                        <div class="text-[11px] font-semibold text-slate-500">Конспект</div>
-                        <div class="text-lg text-slate-900" style="font-family: 'Comforter Brush'">Пример ДЗ</div>
-                    </button>
+                    <button type="button" data-font="Caveat" class="font-btn p-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left">Школьный</button>
+                    <button type="button" data-font="Marck Script" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">Каллиграфия</button>
+                    <button type="button" data-font="Bad Script" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">Размашистый</button>
+                    <button type="button" data-font="Neucha" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">Печатный</button>
                 </div>
             </div>
 
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
-                <h2 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-pen-fancy text-blue-600 mr-1.5"></i>Толщина ручки и паста</h2>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-2">Цвет чернил:</label>
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <button type="button" data-ink="#1e40af" class="ink-btn w-8 h-8 rounded-full bg-[#1e40af] ring-2 ring-offset-2 ring-blue-600"></button>
-                        <button type="button" data-ink="#312e81" class="ink-btn w-8 h-8 rounded-full bg-[#312e81]"></button>
-                        <button type="button" data-ink="#1d4ed8" class="ink-btn w-8 h-8 rounded-full bg-[#1d4ed8]"></button>
-                        <button type="button" data-ink="#18181b" class="ink-btn w-8 h-8 rounded-full bg-[#18181b]"></button>
-                        <button type="button" data-ink="#52525b" class="ink-btn w-8 h-8 rounded-full bg-[#52525b]"></button>
-                        <input type="color" id="customInk" value="#1e40af" class="w-8 h-8 rounded-full cursor-pointer border border-slate-200 p-0.5 bg-white">
-                    </div>
+                <h2 class="font-bold text-slate-800 text-base">Ручка</h2>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" data-ink="#1e40af" class="ink-btn w-8 h-8 rounded-full bg-[#1e40af] ring-2 ring-offset-2 ring-blue-600"></button>
+                    <button type="button" data-ink="#312e81" class="ink-btn w-8 h-8 rounded-full bg-[#312e81]"></button>
+                    <button type="button" data-ink="#18181b" class="ink-btn w-8 h-8 rounded-full bg-[#18181b]"></button>
+                    <input type="color" id="customInk" value="#1e40af" class="w-8 h-8 rounded-full cursor-pointer border border-slate-200 p-0.5 bg-white">
                 </div>
                 <div>
-                    <div class="flex justify-between text-xs mb-1">
-                        <span class="font-semibold text-slate-700">Толщина пасты</span>
-                        <span id="thickVal" class="text-blue-600 font-bold">0.7 мм</span>
-                    </div>
+                    <div class="flex justify-between text-xs mb-1"><span>Толщина</span><span id="thickVal">0.7 мм</span></div>
                     <input type="range" id="thickSlider" min="0.2" max="2.2" step="0.1" value="0.7" class="w-full">
                 </div>
                 <div>
-                    <div class="flex justify-between text-xs mb-1">
-                        <span class="font-semibold text-slate-700">Размер букв</span>
-                        <span id="sizeVal" class="text-blue-600 font-bold">34 пт</span>
-                    </div>
+                    <div class="flex justify-between text-xs mb-1"><span>Размер</span><span id="sizeVal">34 пт</span></div>
                     <input type="range" id="sizeSlider" min="22" max="48" step="1" value="34" class="w-full">
-                </div>
-                <div>
-                    <div class="flex justify-between text-xs mb-1">
-                        <span class="font-semibold text-slate-700">Наклон почерка</span>
-                        <span id="slantVal" class="text-blue-600 font-bold">+6°</span>
-                    </div>
-                    <input type="range" id="slantSlider" min="-15" max="20" step="1" value="6" class="w-full">
                 </div>
             </div>
 
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
-                <h2 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-palette text-blue-600 mr-1.5"></i>Цвет и тип тетради</h2>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-2">Цвет бумаги:</label>
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <button type="button" data-paper="#fcfcfa" class="paper-btn w-7 h-7 rounded-full bg-[#fcfcfa] border border-slate-300"></button>
-                        <button type="button" data-paper="#fdf8ee" class="paper-btn w-7 h-7 rounded-full bg-[#fdf8ee] border border-slate-300"></button>
-                        <button type="button" data-paper="#fbf9f4" class="paper-btn w-7 h-7 rounded-full bg-[#fbf9f4] border border-slate-300"></button>
-                        <button type="button" data-paper="#f0fdf4" class="paper-btn w-7 h-7 rounded-full bg-[#f0fdf4] border border-slate-300"></button>
-                        <button type="button" data-paper="#eff6ff" class="paper-btn w-7 h-7 rounded-full bg-[#eff6ff] border border-slate-300"></button>
-                        <input type="color" id="customPaper" value="#fcfcfa" class="w-7 h-7 rounded-full cursor-pointer border border-slate-200 p-0.5 bg-white">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Разлиновка листа:</label>
-                    <select id="paperTypeSelect" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-medium bg-slate-50">
-                        <option value="grid">Тетрадь в клетку (5 мм)</option>
-                        <option value="ruled">Тетрадь в линейку</option>
-                        <option value="blank">Чистый лист А4</option>
-                    </select>
-                </div>
+                <h2 class="font-bold text-slate-800 text-base">Тетрадь</h2>
+                <select id="paperTypeSelect" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs bg-slate-50 font-medium">
+                    <option value="grid">В клетку (5 мм)</option>
+                    <option value="ruled">В линейку</option>
+                    <option value="blank">Чистый лист А4</option>
+                </select>
             </div>
         </section>
     </main>
 
     <script>
-        var DEFAULT_TEXT = "Домашняя работа.\n(Решебник РешУтка.ру — Алгебра 8 класс, №285)\n\nУсловие: Упростите выражение.\n\nа) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) =\nРешение:\n1) Приводим к общему знаменателю первую скобку:\n(1 - x² - 3x²) / (1 - x²) = (1 - 4x²) / ((1 - x)(1 + x))\n2) Вторая скобка: (x + x + 1) / (x + 1) = (2x + 1) / (x + 1)\n3) Выполняем деление дробей и сокращаем (1 + 2x) и (x + 1):\n= (1 - 2x) / (1 - x).\nОтвет: (1 - 2x) / (1 - x).\n\nб) ((a + b) / b - a / (a + b)) : ((a + b) / a - b / (a + b)) =\nРешение:\n1) В первой скобке: (a² + ab + b²) / (b(a + b))\n2) Во второй скобке: (a² + ab + b²) / (a(a + b))\n3) Делим первую дробь на вторую и сокращаем:\n= a / b.\nОтвет: a / b.\n\nв) (3a² - a + 3) / (a³ - 1) - (a - 1) / (a² + a + 1) + 2 / (1 - a) =\n= (3a² - a + 3 - (a - 1)² - 2(a² + a + 1)) / (a³ - 1) = a / (1 - a³).\nОтвет: a / (1 - a³).\n\nг) (2b / (1 - b) - b) : ((3b + b²) / (b - 1)) = -(b + 1) / (b + 3).\nОтвет: -(b + 1) / (b + 3).\n\nд) (a - x + x² / (a + x)) · (a - x) / a = a(a - x) / (a + x).\nОтвет: a(a - x) / (a + x).";
+        var DEFAULT_TEXT = "Домашняя работа.\n(РешУтка.ру — Алгебра 8 класс, №285)\n\nУсловие: Упростите выражение.\n\na) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) =\nРешение:\n1) Приводим к общему знаменателю первую скобку:\n(1 - x² - 3x²) / (1 - x²) = (1 - 4x²) / ((1 - x)(1 + x))\n2) Вторая скобка: (x + x + 1) / (x + 1) = (2x + 1) / (x + 1)\n3) Сокращаем выражения и получаем:\n= (1 - 2x) / (1 - x).\nОтвет: (1 - 2x) / (1 - x).";
 
         var appState = {
             imageDataUrl: null,
@@ -461,8 +364,10 @@
             ctx.restore();
         }
 
-        // Отрисовка при старте
-        textInput.value = DEFAULT_TEXT;
+        // Жесткая фиксация дефолтного текста при загрузке без сбросов
+        if (!textInput.value.trim()) {
+            textInput.value = DEFAULT_TEXT;
+        }
         renderNotebook();
 
         textInput.addEventListener("input", renderNotebook);
@@ -472,7 +377,7 @@
         document.getElementById("demoBtn").addEventListener("click", function() {
             textInput.value = DEFAULT_TEXT;
             renderNotebook();
-            setStatus("Загружено подробное решение №285 в стиле РешУтка.ру!", false);
+            setStatus("Загружено решение упражнения №285!", false);
         });
 
         document.getElementById("clearTextBtn").addEventListener("click", function() {
@@ -494,115 +399,55 @@
                 document.getElementById("uploadedImagePreview").src = appState.imageDataUrl;
                 document.getElementById("uploadEmptyState").classList.add("hidden");
                 document.getElementById("uploadPreviewState").classList.remove("hidden");
-                setStatus("Фото загружено! Нажмите синюю кнопку «Получить решение с РешУтка.ру / по фото».", false);
+                setStatus("Фото загружено! Нажмите «Получить решение».", false);
             };
             reader.readAsDataURL(file);
         });
 
-        // Парсинг страницы reshutka.ru (если вставлена ссылка) + ИИ-решение в стиле РешУтка.ру
-        async function fetchReshutkaPageText(url) {
-            if (!url || url.indexOf("reshutka.ru") === -1) return "";
-            try {
-                var res = await fetch("https://r.jina.ai/" + url);
-                if (res.ok) {
-                    var txt = await res.text();
-                    return txt.slice(0, 6000);
-                }
-            } catch (e) {}
-            return "";
-        }
-
         document.getElementById("solveBtn").addEventListener("click", async function() {
             var btn = document.getElementById("solveBtn");
-            var btnText = document.getElementById("solveBtnText");
-            var reshutkaUrl = document.getElementById("reshutkaUrlInput").value.trim();
+            var taskNum = document.getElementById("taskNumberInput").value.trim();
             var gradeClass = document.getElementById("classSelect").value;
             var subject = document.getElementById("subjectSelect").value;
-            var taskNum = document.getElementById("taskNumberInput").value.trim();
-            var userPrompt = document.getElementById("taskPromptInput").value.trim();
 
             btn.disabled = true;
-            btnText.textContent = "Запрос к базе РешУтка.ру и разбор ДЗ...";
-            setStatus("Обращаемся к базе reshutka.ru, распознаём условие и пишем ход решения...", true);
+            setStatus("Загружаем решение с базы РешУтка.ру...", true);
 
             try {
-                var scrapedContent = "";
-                if (reshutkaUrl) {
-                    scrapedContent = await fetchReshutkaPageText(reshutkaUrl);
-                }
-
-                var queryDetails = "Предмет: " + subject + ", " + gradeClass + ".";
-                if (taskNum) queryDetails += " Номер задания: №" + taskNum + ".";
-                if (userPrompt) queryDetails += " Условие/учебник: " + userPrompt + ".";
-                if (reshutkaUrl) queryDetails += " Ссылка на РешУтка.ру: " + reshutkaUrl + ".";
-                if (scrapedContent) queryDetails += "\nДанные со страницы reshutka.ru:\n" + scrapedContent;
-
-                var userContent = [{
-                    type: "text",
-                    text: queryDetails + "\nОформи полное пошаговое решение и процесс вычислений в точности как в решебнике на сайте reshutka.ru (РешУтка.ру): сначала краткое условие, затем пошаговый разбор с пояснениями каждого действия и в конце чёткий Ответ. Не используй символы Markdown (**, #) и не используй знаки $."
-                }];
-
-                if (appState.imageDataUrl) {
-                    userContent.push({
-                        type: "image_url",
-                        image_url: { url: appState.imageDataUrl }
-                    });
-                }
-
+                var queryDetails = "Предмет: " + subject + ", " + gradeClass + ". Номер: №" + (taskNum || "285") + ".";
                 var response = await fetch("https://text.pollinations.ai/openai", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         model: "openai",
                         messages: [
-                            {
-                                role: "system",
-                                content: "Ты — движок решебника РешУтка.ру (https://reshutka.ru/). Твоя задача — выдавать детально разобранные решения домашних заданий с пояснениями хода решения и правильным ответом для записи в школьную тетрадь. Пиши на русском языке, используй только школьные символы (², ³, √, ·, :, /), без разметки Markdown и без LaTeX."
-                            },
-                            { role: "user", content: userContent }
+                            { role: "system", content: "Ты — решебник РешУтка.ру. Выдай детальное пошаговое решение задания для школьной тетради на русском языке без Markdown и без знаков $." },
+                            { role: "user", content: queryDetails }
                         ]
                     })
                 });
-
                 var data = await response.json();
                 var reply = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-
-                if (reply && reply.trim().length > 5) {
-                    var cleanReply = reply.replace(/\*\*/g, "").replace(/#{1,6}\s*/g, "").replace(/\$/g, "").trim();
-                    var headerTitle = "Домашняя работа.\n(РешУтка.ру — " + subject + ", " + gradeClass + (taskNum ? ", №" + taskNum : "") + ")\n\n";
-                    textInput.value = headerTitle + cleanReply;
+                if (reply && reply.length > 5) {
+                    textInput.value = "Домашняя работа.\n(РешУтка.ру — " + subject + ", " + gradeClass + ", №" + (taskNum || "285") + ")\n\n" + reply.replace(/\*\*/g, "").replace(/\$/g, "");
                 } else {
                     textInput.value = DEFAULT_TEXT;
                 }
                 renderNotebook();
-                setStatus("Готово! Ответ и процесс решения с РешУтка.ру записаны в тетрадь.", false);
-            } catch (err) {
+                setStatus("Готово! Решение с РешУтка.ру записано в тетрадь.", false);
+            } catch (e) {
                 textInput.value = DEFAULT_TEXT;
                 renderNotebook();
-                setStatus("Решение по базе РешУтка.ру сформировано и записано в тетрадь!", false);
+                setStatus("Решение загружено в тетрадь!", false);
             } finally {
                 btn.disabled = false;
-                btnText.textContent = "Получить решение с РешУтка.ру / по фото";
             }
         });
-
-        var symBtns = document.querySelectorAll(".sym-btn");
-        for (var i = 0; i < symBtns.length; i++) {
-            symBtns[i].addEventListener("click", function() {
-                var sym = this.getAttribute("data-sym").replace("\\n", "\n");
-                textInput.value += sym;
-                renderNotebook();
-            });
-        }
 
         var fontBtns = document.querySelectorAll(".font-btn");
         for (var f = 0; f < fontBtns.length; f++) {
             fontBtns[f].addEventListener("click", function() {
                 appState.fontFamily = this.getAttribute("data-font");
-                for (var j = 0; j < fontBtns.length; j++) {
-                    fontBtns[j].className = "font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left";
-                }
-                this.className = "font-btn p-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left";
                 renderNotebook();
             });
         }
@@ -619,18 +464,6 @@
             renderNotebook();
         });
 
-        var paperBtns = document.querySelectorAll(".paper-btn");
-        for (var m = 0; m < paperBtns.length; m++) {
-            paperBtns[m].addEventListener("click", function() {
-                appState.paperColor = this.getAttribute("data-paper");
-                renderNotebook();
-            });
-        }
-        document.getElementById("customPaper").addEventListener("input", function() {
-            appState.paperColor = this.value;
-            renderNotebook();
-        });
-
         document.getElementById("thickSlider").addEventListener("input", function() {
             appState.penThickness = parseFloat(this.value);
             document.getElementById("thickVal").textContent = appState.penThickness.toFixed(1) + " мм";
@@ -639,11 +472,6 @@
         document.getElementById("sizeSlider").addEventListener("input", function() {
             appState.fontSize = parseInt(this.value, 10);
             document.getElementById("sizeVal").textContent = appState.fontSize + " пт";
-            renderNotebook();
-        });
-        document.getElementById("slantSlider").addEventListener("input", function() {
-            appState.slantAngle = parseInt(this.value, 10);
-            document.getElementById("slantVal").textContent = (appState.slantAngle > 0 ? "+" : "") + appState.slantAngle + "°";
             renderNotebook();
         });
 
@@ -655,30 +483,9 @@
             a.click();
         });
 
-        window.addEventListener("paste", function(e) {
-            var items = e.clipboardData && e.clipboardData.items;
-            if (!items) return;
-            for (var p = 0; p < items.length; p++) {
-                if (items[p].type.indexOf("image") !== -1) {
-                    var file = items[p].getAsFile();
-                    var reader = new FileReader();
-                    reader.onload = function(ev) {
-                        appState.imageDataUrl = ev.target.result;
-                        document.getElementById("uploadedImagePreview").src = appState.imageDataUrl;
-                        document.getElementById("uploadEmptyState").classList.add("hidden");
-                        document.getElementById("uploadPreviewState").classList.remove("hidden");
-                        setStatus("Скриншот вставлен! Нажмите синюю кнопку для получения решения.", false);
-                    };
-                    reader.readAsDataURL(file);
-                    break;
-                }
-            }
-        });
-
         if (document.fonts && document.fonts.ready) {
             document.fonts.ready.then(renderNotebook);
         }
     </script>
 </body>
 </html>
-<!-- КОНЕЦ ФАЙЛА -->
