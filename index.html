@@ -4,183 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Почерк.AI — ГДЗ по фото в рукописной тетради</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Рукописные кириллические шрифты -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Caveat:wght@400;500;600;700&family=Comforter+Brush&family=Inter:wght@400;500;600;700&family=Marck+Script&family=Neucha&family=Pangolin&family=Shantell+Sans:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-    <!-- Иконки -->
+    <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Caveat:wght@400;600;700&family=Comforter+Brush&family=Inter:wght@400;500;600;700&family=Marck+Script&family=Neucha&family=Shantell+Sans:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <style>
         .notebook-stage {
             background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
             background-size: 20px 20px;
         }
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 999px;
-            outline: none;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #2563eb;
-            cursor: pointer;
-            border: 2px solid #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-        .font-preload {
-            position: absolute;
-            left: -9999px;
-            top: -9999px;
-            visibility: hidden;
-            pointer-events: none;
+        /* Страховочная сетка тетради до загрузки скрипта */
+        #notebookCanvas {
+            background-color: #fcfcfa;
+            background-image:
+                linear-gradient(to right, rgba(59, 130, 246, 0.22) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(59, 130, 246, 0.22) 1px, transparent 1px);
+            background-size: 2.74% 1.93%;
         }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Предзагрузка шрифтов для Canvas -->
-    <div class="font-preload" aria-hidden="true">
-        <span style="font-family: 'Caveat'">Тест</span>
-        <span style="font-family: 'Marck Script'">Тест</span>
-        <span style="font-family: 'Bad Script'">Тест</span>
-        <span style="font-family: 'Neucha'">Тест</span>
-        <span style="font-family: 'Pangolin'">Тест</span>
-        <span style="font-family: 'Shantell Sans'">Тест</span>
-        <span style="font-family: 'Comforter Brush'">Тест</span>
-    </div>
-
     <!-- Шапка -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-md">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow">
                     <i class="fa-solid fa-pen-nib text-lg"></i>
                 </div>
                 <div>
-                    <div class="flex items-center gap-2">
-                        <h1 class="font-bold text-lg sm:text-xl text-slate-900">Почерк<span class="text-blue-600">.AI</span></h1>
-                        <span class="hidden sm:inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">ГДЗ по фото от руки</span>
-                    </div>
-                    <p class="text-xs text-slate-500 hidden md:block">Распознаёт задания по фото и пишет решение живым рукописным почерком в тетради</p>
+                    <h1 class="font-bold text-lg sm:text-xl text-slate-900">Почерк<span class="text-blue-600">.AI</span></h1>
+                    <p class="text-xs text-slate-500 hidden sm:block">Решает задания по фото и пишет решение от руки в тетради</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-2">
-                <button type="button" onclick="downloadNotebookImage()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold text-xs sm:text-sm shadow-md transition cursor-pointer">
-                    <i class="fa-solid fa-download"></i>
-                    <span>Скачать лист</span>
-                </button>
-            </div>
+            <button type="button" id="downloadBtn" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-semibold text-xs sm:text-sm shadow transition cursor-pointer">
+                <i class="fa-solid fa-download mr-1.5"></i> Скачать лист
+            </button>
         </div>
     </header>
 
-    <!-- Основная сетка -->
+    <!-- Основной контент -->
     <main class="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
-        <!-- ЛЕВАЯ КОЛОНКА: Загрузка фото и Текст решения -->
+        <!-- ЛЕВАЯ КОЛОНКА -->
         <section class="lg:col-span-4 flex flex-col gap-4">
-
-            <!-- Карточка 1: Фото задания -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2">
                         <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">1</span>
                         <h2 class="font-bold text-slate-800 text-base">Фото задания или условие</h2>
                     </div>
-                    <button type="button" onclick="loadExample285()" class="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1 cursor-pointer">
+                    <button type="button" id="demoBtn" class="text-xs text-blue-600 hover:text-blue-800 font-semibold cursor-pointer">
                         <i class="fa-solid fa-wand-magic-sparkles"></i> Пример №285
                     </button>
                 </div>
 
-                <!-- Зона загрузки фото -->
-                <div id="dropZone" onclick="triggerFileSelect(event)" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-4 text-center cursor-pointer transition bg-slate-50/70 hover:bg-blue-50/30 relative">
-                    <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="onPhotoSelected(event)">
-
+                <!-- Нативный label всегда открывает выбор файла без сбоев -->
+                <label for="photoInput" class="block border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-4 text-center cursor-pointer transition bg-slate-50 hover:bg-blue-50/40 relative">
+                    <input type="file" id="photoInput" accept="image/*" class="hidden">
                     <div id="uploadEmptyState" class="py-3">
                         <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mx-auto mb-2">
                             <i class="fa-solid fa-camera-retro text-xl"></i>
                         </div>
-                        <p class="text-sm font-semibold text-slate-700">Нажмите, чтобы загрузить фото задачи</p>
-                        <p class="text-xs text-slate-500 mt-1">Или перетащите снимок сюда / вставьте через Ctrl+V</p>
+                        <p class="text-sm font-semibold text-slate-700">Нажмите сюда, чтобы выбрать фото</p>
+                        <p class="text-xs text-slate-500 mt-1">Поддерживаются фото с телефона и ПК (JPG, PNG)</p>
                     </div>
-
                     <div id="uploadPreviewState" class="hidden relative">
-                        <img id="uploadedImagePreview" src="" alt="Фото задания" class="max-h-48 mx-auto rounded-lg shadow-sm object-contain border border-slate-200 bg-white">
-                        <button type="button" onclick="removeUploadedPhoto(event)" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-slate-900/75 hover:bg-red-600 text-white flex items-center justify-center text-xs transition shadow" title="Удалить фото">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                        <div class="mt-2 text-xs text-emerald-700 font-semibold flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-circle-check"></i> Фото прикреплено — нажмите синюю кнопку ниже
+                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-44 mx-auto rounded-lg border border-slate-200 bg-white object-contain">
+                        <div class="mt-2 text-xs text-emerald-700 font-semibold">
+                            <i class="fa-solid fa-circle-check"></i> Фото выбрано (нажмите чтобы сменить)
                         </div>
                     </div>
-                </div>
+                </label>
 
-                <!-- Поле для текстового уточнения -->
                 <div class="mt-3">
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Уточнение для ИИ или текст задачи:</label>
-                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Реши все пункты подробно или вставь условие задачи текстом..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50 focus:bg-white transition"></textarea>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Уточнение для ИИ или условие текстом:</label>
+                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Реши задачу подробно по действиям..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
-                <!-- ГЛАВНАЯ КНОПКА РАСПОЗНАВАНИЯ -->
-                <button type="button" id="solveWithAiBtn" onclick="solveHomeworkNow()" class="mt-3.5 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98] text-white font-bold text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition cursor-pointer">
+                <button type="button" id="solveBtn" class="mt-3.5 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-95 text-white font-bold text-sm shadow-md flex items-center justify-center gap-2 transition cursor-pointer">
                     <i class="fa-solid fa-brain" id="solveBtnIcon"></i>
                     <span id="solveBtnText">Распознать фото и решить ДЗ</span>
                 </button>
 
-                <!-- Баннер статуса -->
-                <div id="aiStatusBanner" class="hidden mt-3 p-3 rounded-xl text-xs font-medium flex items-start gap-2.5 border"></div>
+                <div id="statusBox" class="hidden mt-3 p-3 rounded-xl text-xs font-medium border"></div>
             </div>
 
-            <!-- Карточка 2: Редактор текста в тетради -->
+            <!-- Карточка 2: Текст в тетради -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 flex-1 flex flex-col">
                 <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-2">
                         <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">2</span>
-                        <h2 class="font-bold text-slate-800 text-base">Текст в тетради (можно исправить)</h2>
+                        <h2 class="font-bold text-slate-800 text-base">Текст в тетради</h2>
                     </div>
-                    <button type="button" onclick="clearNotebookText()" class="text-xs px-2.5 py-1 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 transition cursor-pointer" title="Очистить">
+                    <button type="button" id="clearTextBtn" class="text-xs px-2 py-1 rounded text-slate-500 hover:text-red-600 cursor-pointer">
                         <i class="fa-solid fa-eraser mr-1"></i>Очистить
                     </button>
                 </div>
 
-                <!-- Быстрые школьные символы -->
                 <div class="flex flex-wrap gap-1 mb-2 pb-2 border-b border-slate-100">
-                    <button type="button" onclick="insertSymbol('Дано:\n')" class="px-2 py-1 text-[11px] font-semibold bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md">Дано:</button>
-                    <button type="button" onclick="insertSymbol('Решение:\n')" class="px-2 py-1 text-[11px] font-semibold bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-md">Решение:</button>
-                    <button type="button" onclick="insertSymbol('\nОтвет: ')" class="px-2 py-1 text-[11px] font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-md">Ответ:</button>
-                    <button type="button" onclick="insertSymbol('²')" class="px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">x²</button>
-                    <button type="button" onclick="insertSymbol('³')" class="px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">x³</button>
-                    <button type="button" onclick="insertSymbol('√')" class="px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">√</button>
-                    <button type="button" onclick="insertSymbol('·')" class="px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">·</button>
-                    <button type="button" onclick="insertSymbol('≈')" class="px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">≈</button>
-                    <button type="button" onclick="insertSymbol('≠')" class="px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200 rounded-md">≠</button>
+                    <button type="button" data-sym="Дано:\n" class="sym-btn px-2 py-1 text-[11px] font-semibold bg-blue-50 text-blue-700 rounded">Дано:</button>
+                    <button type="button" data-sym="Решение:\n" class="sym-btn px-2 py-1 text-[11px] font-semibold bg-blue-50 text-blue-700 rounded">Решение:</button>
+                    <button type="button" data-sym="\nОтвет: " class="sym-btn px-2 py-1 text-[11px] font-semibold bg-emerald-50 text-emerald-700 rounded">Ответ:</button>
+                    <button type="button" data-sym="²" class="sym-btn px-2 py-1 text-xs bg-slate-100 rounded">x²</button>
+                    <button type="button" data-sym="³" class="sym-btn px-2 py-1 text-xs bg-slate-100 rounded">x³</button>
+                    <button type="button" data-sym="√" class="sym-btn px-2 py-1 text-xs bg-slate-100 rounded">√</button>
+                    <button type="button" data-sym="·" class="sym-btn px-2 py-1 text-xs bg-slate-100 rounded">·</button>
                 </div>
 
-                <textarea id="notebookTextInput" rows="13" oninput="onTextManualChange()" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono resize-y" placeholder="Загрузите фото и нажмите «Распознать фото и решить ДЗ», либо напишите любой текст..."></textarea>
+                <textarea id="notebookTextInput" rows="12" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono resize-y"></textarea>
             </div>
         </section>
 
-        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Тетрадный лист -->
+        <!-- ЦЕНТРАЛЬНАЯ КОЛОНКА: Лист тетради -->
         <section class="lg:col-span-5 flex flex-col items-center">
-            <div class="w-full bg-white rounded-2xl border border-slate-200 shadow-sm p-2.5 mb-3 flex items-center justify-between gap-2">
-                <span class="text-xs font-semibold text-slate-600 pl-2">
-                    <i class="fa-solid fa-book-open text-blue-600 mr-1.5"></i>Предпросмотр тетрадного листа
-                </span>
+            <div class="w-full bg-white rounded-2xl border border-slate-200 shadow-sm p-2.5 mb-3 flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate-600 pl-2">Предпросмотр тетрадного листа</span>
                 <div class="flex items-center gap-2">
-                    <button type="button" onclick="randomizeHand()" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition cursor-pointer">
+                    <button type="button" id="jitterBtn" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium cursor-pointer">
                         <i class="fa-solid fa-dice mr-1"></i>Вариация руки
                     </button>
-                    <select id="teacherGradeSelect" onchange="renderNotebook()" class="text-xs border border-slate-200 rounded-lg px-2 py-1.5 bg-slate-50 font-medium text-slate-700">
+                    <select id="gradeSelect" class="text-xs border border-slate-200 rounded-lg px-2 py-1.5 bg-slate-50 font-medium">
                         <option value="none">Без оценки</option>
                         <option value="5">Оценка «5»</option>
                         <option value="4">Оценка «4»</option>
@@ -189,113 +134,97 @@
                 </div>
             </div>
 
-            <div class="w-full notebook-stage rounded-2xl border border-slate-200 p-3 sm:p-5 flex justify-center items-center shadow-inner overflow-hidden">
+            <div class="w-full notebook-stage rounded-2xl border border-slate-200 p-3 sm:p-5 flex justify-center items-center shadow-inner">
                 <div class="relative w-full max-w-[620px] shadow-2xl rounded-sm overflow-hidden bg-white">
-                    <canvas id="notebookCanvas" width="1240" height="1754" class="w-full h-auto block select-none"></canvas>
+                    <canvas id="notebookCanvas" width="1240" height="1754" class="w-full h-auto block"></canvas>
                 </div>
             </div>
         </section>
 
-        <!-- ПРАВАЯ КОЛОНКА: Настройки почерка, ручки и цвета тетради -->
+        <!-- ПРАВАЯ КОЛОНКА: Настройки -->
         <section class="lg:col-span-3 flex flex-col gap-4">
-
-            <!-- Выбор почерка -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5">
-                <h2 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-font text-blue-600"></i> Выбор почерка
-                </h2>
-                <div class="grid grid-cols-2 gap-2" id="fontButtonsContainer">
-                    <button type="button" onclick="selectFont('Caveat', this)" class="font-btn p-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left transition">
-                        <div class="text-[11px] font-semibold text-slate-500">Школьный беглый</div>
-                        <div class="text-xl text-slate-900 mt-0.5" style="font-family: 'Caveat'">Пример ДЗ x²</div>
+                <h2 class="font-bold text-slate-800 text-base mb-3"><i class="fa-solid fa-font text-blue-600 mr-1.5"></i>Выбор почерка</h2>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" data-font="Caveat" class="font-btn p-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left">
+                        <div class="text-[11px] font-semibold text-slate-500">Школьный</div>
+                        <div class="text-xl text-slate-900" style="font-family: 'Caveat'">Пример ДЗ</div>
                     </button>
-                    <button type="button" onclick="selectFont('Marck Script', this)" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left transition">
-                        <div class="text-[11px] font-semibold text-slate-500">Каллиграфический</div>
-                        <div class="text-lg text-slate-900 mt-0.5" style="font-family: 'Marck Script'">Пример ДЗ x²</div>
+                    <button type="button" data-font="Marck Script" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
+                        <div class="text-[11px] font-semibold text-slate-500">Каллиграфия</div>
+                        <div class="text-lg text-slate-900" style="font-family: 'Marck Script'">Пример ДЗ</div>
                     </button>
-                    <button type="button" onclick="selectFont('Bad Script', this)" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left transition">
+                    <button type="button" data-font="Bad Script" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
                         <div class="text-[11px] font-semibold text-slate-500">Размашистый</div>
-                        <div class="text-base text-slate-900 mt-0.5" style="font-family: 'Bad Script'">Пример ДЗ x²</div>
+                        <div class="text-base text-slate-900" style="font-family: 'Bad Script'">Пример ДЗ</div>
                     </button>
-                    <button type="button" onclick="selectFont('Neucha', this)" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left transition">
+                    <button type="button" data-font="Neucha" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
                         <div class="text-[11px] font-semibold text-slate-500">Печатный</div>
-                        <div class="text-lg text-slate-900 mt-0.5" style="font-family: 'Neucha'">Пример ДЗ x²</div>
+                        <div class="text-lg text-slate-900" style="font-family: 'Neucha'">Пример ДЗ</div>
                     </button>
-                    <button type="button" onclick="selectFont('Shantell Sans', this)" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left transition">
+                    <button type="button" data-font="Shantell Sans" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
                         <div class="text-[11px] font-semibold text-slate-500">Округлый</div>
-                        <div class="text-sm text-slate-900 mt-1 italic" style="font-family: 'Shantell Sans'">Пример ДЗ x²</div>
+                        <div class="text-sm text-slate-900 italic" style="font-family: 'Shantell Sans'">Пример ДЗ</div>
                     </button>
-                    <button type="button" onclick="selectFont('Comforter Brush', this)" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left transition">
-                        <div class="text-[11px] font-semibold text-slate-500">Быстрый конспект</div>
-                        <div class="text-lg text-slate-900 mt-0.5" style="font-family: 'Comforter Brush'">Пример ДЗ x²</div>
+                    <button type="button" data-font="Comforter Brush" class="font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left">
+                        <div class="text-[11px] font-semibold text-slate-500">Конспект</div>
+                        <div class="text-lg text-slate-900" style="font-family: 'Comforter Brush'">Пример ДЗ</div>
                     </button>
                 </div>
             </div>
 
-            <!-- Толщина ручки и паста -->
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3.5">
-                <h2 class="font-bold text-slate-800 text-base flex items-center gap-2">
-                    <i class="fa-solid fa-pen-fancy text-blue-600"></i> Толщина ручки и паста
-                </h2>
-
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
+                <h2 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-pen-fancy text-blue-600 mr-1.5"></i>Толщина ручки и паста</h2>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-2">Цвет чернил (ручка):</label>
+                    <label class="block text-xs font-semibold text-slate-600 mb-2">Цвет чернил:</label>
                     <div class="flex items-center gap-2 flex-wrap">
-                        <button type="button" onclick="selectInk('#1e40af')" class="w-8 h-8 rounded-full bg-[#1e40af] ring-2 ring-offset-2 ring-blue-600 shadow-sm"></button>
-                        <button type="button" onclick="selectInk('#312e81')" class="w-8 h-8 rounded-full bg-[#312e81] shadow-sm"></button>
-                        <button type="button" onclick="selectInk('#1d4ed8')" class="w-8 h-8 rounded-full bg-[#1d4ed8] shadow-sm"></button>
-                        <button type="button" onclick="selectInk('#18181b')" class="w-8 h-8 rounded-full bg-[#18181b] shadow-sm"></button>
-                        <button type="button" onclick="selectInk('#52525b')" class="w-8 h-8 rounded-full bg-[#52525b] shadow-sm"></button>
-                        <input type="color" value="#1e40af" oninput="selectInk(this.value)" class="w-8 h-8 rounded-full cursor-pointer border border-slate-200 p-0.5 bg-white">
+                        <button type="button" data-ink="#1e40af" class="ink-btn w-8 h-8 rounded-full bg-[#1e40af] ring-2 ring-offset-2 ring-blue-600"></button>
+                        <button type="button" data-ink="#312e81" class="ink-btn w-8 h-8 rounded-full bg-[#312e81]"></button>
+                        <button type="button" data-ink="#1d4ed8" class="ink-btn w-8 h-8 rounded-full bg-[#1d4ed8]"></button>
+                        <button type="button" data-ink="#18181b" class="ink-btn w-8 h-8 rounded-full bg-[#18181b]"></button>
+                        <button type="button" data-ink="#52525b" class="ink-btn w-8 h-8 rounded-full bg-[#52525b]"></button>
+                        <input type="color" id="customInk" value="#1e40af" class="w-8 h-8 rounded-full cursor-pointer border border-slate-200 p-0.5 bg-white">
                     </div>
                 </div>
-
                 <div>
                     <div class="flex justify-between text-xs mb-1">
                         <span class="font-semibold text-slate-700">Толщина пасты</span>
-                        <span id="penThicknessVal" class="text-blue-600 font-bold">0.7 мм</span>
+                        <span id="thickVal" class="text-blue-600 font-bold">0.7 мм</span>
                     </div>
-                    <input type="range" id="penThicknessSlider" min="0.2" max="2.2" step="0.1" value="0.7" oninput="updateSliders()" class="w-full">
+                    <input type="range" id="thickSlider" min="0.2" max="2.2" step="0.1" value="0.7" class="w-full">
                 </div>
-
                 <div>
                     <div class="flex justify-between text-xs mb-1">
                         <span class="font-semibold text-slate-700">Размер букв</span>
-                        <span id="fontSizeVal" class="text-blue-600 font-bold">34 пт</span>
+                        <span id="sizeVal" class="text-blue-600 font-bold">34 пт</span>
                     </div>
-                    <input type="range" id="fontSizeSlider" min="22" max="48" step="1" value="34" oninput="updateSliders()" class="w-full">
+                    <input type="range" id="sizeSlider" min="22" max="48" step="1" value="34" class="w-full">
                 </div>
-
                 <div>
                     <div class="flex justify-between text-xs mb-1">
                         <span class="font-semibold text-slate-700">Наклон почерка</span>
-                        <span id="slantAngleVal" class="text-blue-600 font-bold">+6°</span>
+                        <span id="slantVal" class="text-blue-600 font-bold">+6°</span>
                     </div>
-                    <input type="range" id="slantAngleSlider" min="-15" max="20" step="1" value="6" oninput="updateSliders()" class="w-full">
+                    <input type="range" id="slantSlider" min="-15" max="20" step="1" value="6" class="w-full">
                 </div>
             </div>
 
-            <!-- Цвет и тип тетрадного листа -->
             <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
-                <h2 class="font-bold text-slate-800 text-base flex items-center gap-2">
-                    <i class="fa-solid fa-palette text-blue-600"></i> Цвет и тип тетради
-                </h2>
-
+                <h2 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-palette text-blue-600 mr-1.5"></i>Цвет и тип тетради</h2>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-2">Цвет бумаги:</label>
                     <div class="flex items-center gap-2 flex-wrap">
-                        <button type="button" onclick="selectPaperColor('#fcfcfa')" class="w-7 h-7 rounded-full bg-[#fcfcfa] border border-slate-300 shadow-sm" title="Белая"></button>
-                        <button type="button" onclick="selectPaperColor('#fdf8ee')" class="w-7 h-7 rounded-full bg-[#fdf8ee] border border-slate-300 shadow-sm" title="С желтизной"></button>
-                        <button type="button" onclick="selectPaperColor('#fbf9f4')" class="w-7 h-7 rounded-full bg-[#fbf9f4] border border-slate-300 shadow-sm" title="Молочная"></button>
-                        <button type="button" onclick="selectPaperColor('#f0fdf4')" class="w-7 h-7 rounded-full bg-[#f0fdf4] border border-slate-300 shadow-sm" title="Мятная"></button>
-                        <button type="button" onclick="selectPaperColor('#eff6ff')" class="w-7 h-7 rounded-full bg-[#eff6ff] border border-slate-300 shadow-sm" title="Голубоватая"></button>
-                        <input type="color" value="#fcfcfa" oninput="selectPaperColor(this.value)" class="w-7 h-7 rounded-full cursor-pointer border border-slate-200 p-0.5 bg-white">
+                        <button type="button" data-paper="#fcfcfa" class="paper-btn w-7 h-7 rounded-full bg-[#fcfcfa] border border-slate-300"></button>
+                        <button type="button" data-paper="#fdf8ee" class="paper-btn w-7 h-7 rounded-full bg-[#fdf8ee] border border-slate-300"></button>
+                        <button type="button" data-paper="#fbf9f4" class="paper-btn w-7 h-7 rounded-full bg-[#fbf9f4] border border-slate-300"></button>
+                        <button type="button" data-paper="#f0fdf4" class="paper-btn w-7 h-7 rounded-full bg-[#f0fdf4] border border-slate-300"></button>
+                        <button type="button" data-paper="#eff6ff" class="paper-btn w-7 h-7 rounded-full bg-[#eff6ff] border border-slate-300"></button>
+                        <input type="color" id="customPaper" value="#fcfcfa" class="w-7 h-7 rounded-full cursor-pointer border border-slate-200 p-0.5 bg-white">
                     </div>
                 </div>
-
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Разлиновка листа:</label>
-                    <select id="paperTypeSelect" onchange="renderNotebook()" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-medium bg-slate-50">
+                    <select id="paperTypeSelect" class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs font-medium bg-slate-50">
                         <option value="grid">Тетрадь в клетку (5 мм)</option>
                         <option value="ruled">Тетрадь в линейку</option>
                         <option value="blank">Чистый лист А4</option>
@@ -306,56 +235,315 @@
     </main>
 
     <script>
-        const SOLUTION_285 = `Домашняя работа.
+        var DEFAULT_TEXT = "Домашняя работа.\n\n№ 285. Упростите выражение:\n\nа) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) =\n1) 1 - 3x² / (1 - x²) = (1 - 4x²) / ((1 - x)(1 + x))\n2) x / (x + 1) + 1 = (2x + 1) / (x + 1)\n3) ((1 - 2x)(1 + 2x)) / ((1 - x)(1 + x)) · (x + 1) / (2x + 1) = (1 - 2x) / (1 - x)\nОтвет: (1 - 2x) / (1 - x).\n\nб) ((a + b) / b - a / (a + b)) : ((a + b) / a - b / (a + b)) =\n= ((a² + ab + b²) / (b(a + b))) : ((a² + ab + b²) / (a(a + b))) = a / b\nОтвет: a / b.\n\nв) (3a² - a + 3) / (a³ - 1) - (a - 1) / (a² + a + 1) + 2 / (1 - a) =\n= -a / (a³ - 1) = a / (1 - a³)\nОтвет: a / (1 - a³).\n\nг) (2b / (1 - b) - b) : ((3b + b²) / (b - 1)) = -(b + 1) / (b + 3)\nОтвет: -(b + 1) / (b + 3).\n\nд) (a - x + x² / (a + x)) · (a - x) / a = a(a - x) / (a + x)\nОтвет: a(a - x) / (a + x).";
 
-№ 285. Упростите выражение:
-
-а) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) =
-1) 1 - 3x² / (1 - x²) = (1 - x² - 3x²) / (1 - x²) = (1 - 4x²) / ((1 - x)(1 + x))
-2) x / (x + 1) + 1 = (x + x + 1) / (x + 1) = (2x + 1) / (x + 1)
-3) ((1 - 2x)(1 + 2x)) / ((1 - x)(1 + x)) · (x + 1) / (2x + 1) = (1 - 2x) / (1 - x)
-Ответ: (1 - 2x) / (1 - x).
-
-б) ((a + b) / b - a / (a + b)) : ((a + b) / a - b / (a + b)) =
-1) ((a + b)² - ab) / (b(a + b)) = (a² + ab + b²) / (b(a + b))
-2) ((a + b)² - ab) / (a(a + b)) = (a² + ab + b²) / (a(a + b))
-3) Делим первую дробь на вторую: = a / b
-Ответ: a / b.
-
-в) (3a² - a + 3) / (a³ - 1) - (a - 1) / (a² + a + 1) + 2 / (1 - a) =
-= (3a² - a + 3 - (a - 1)² - 2(a² + a + 1)) / (a³ - 1) =
-= (3a² - a + 3 - a² + 2a - 1 - 2a² - 2a - 2) / (a³ - 1) = -a / (a³ - 1) = a / (1 - a³)
-Ответ: a / (1 - a³).
-
-г) (2b / (1 - b) - b) : ((3b + b²) / (b - 1)) =
-= (2b - b + b²) / (1 - b) · (b - 1) / (b(3 + b)) =
-= (b(1 + b)) / (1 - b) · (-(1 - b)) / (b(b + 3)) = -(b + 1) / (b + 3)
-Ответ: -(b + 1) / (b + 3).
-
-д) (a - x + x² / (a + x)) · (a - x) / a =
-= (a² - x² + x²) / (a + x) · (a - x) / a = a² / (a + x) · (a - x) / a = a(a - x) / (a + x)
-Ответ: a(a - x) / (a + x).`;
-
-        const state = {
+        var appState = {
             imageDataUrl: null,
-            fontFamily: 'Caveat',
-            inkColor: '#1e40af',
+            fontFamily: "Caveat",
+            inkColor: "#1e40af",
             penThickness: 0.7,
             fontSize: 34,
             slantAngle: 6,
-            paperColor: '#fcfcfa',
-            randomSeed: 12345
+            paperColor: "#fcfcfa",
+            seed: 12345
         };
 
-        const canvas = document.getElementById('notebookCanvas');
-        const ctx = canvas.getContext('2d');
-        const textInput = document.getElementById('notebookTextInput');
+        var canvas = document.getElementById("notebookCanvas");
+        var ctx = canvas.getContext("2d");
+        var textInput = document.getElementById("notebookTextInput");
 
-        function seededRandom(seed) {
-            let x = Math.sin(seed++) * 10000;
+        function pseudoRandom(s) {
+            var x = Math.sin(s) * 10000;
             return x - Math.floor(x);
         }
 
-        function showStatus(msg, type) {
-            const banner = document.getElementById('aiStatusBanner');
-            banner.className = 'mt-3 p-3
+        function setStatus(text, isLoading) {
+            var box = document.getElementById("statusBox");
+            box.className = "mt-3 p-3 rounded-xl text-xs font-medium border " + (isLoading ? "bg-blue-50 text-blue-800 border-blue-200" : "bg-emerald-50 text-emerald-800 border-emerald-200");
+            box.textContent = text;
+            box.classList.remove("hidden");
+        }
+
+        function renderNotebook() {
+            var W = canvas.width;
+            var H = canvas.height;
+            ctx.save();
+            ctx.clearRect(0, 0, W, H);
+
+            ctx.fillStyle = appState.paperColor;
+            ctx.fillRect(0, 0, W, H);
+
+            var cellSize = 34;
+            var paperType = document.getElementById("paperTypeSelect").value;
+            ctx.lineWidth = 1.3;
+            ctx.strokeStyle = "rgba(59, 130, 246, 0.28)";
+
+            if (paperType === "grid") {
+                ctx.beginPath();
+                for (var x = cellSize; x < W; x += cellSize) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+                for (var y = cellSize; y < H; y += cellSize) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+                ctx.stroke();
+            } else if (paperType === "ruled") {
+                ctx.beginPath();
+                for (var ry = cellSize * 3; ry < H - cellSize; ry += cellSize * 1.5) { ctx.moveTo(0, ry); ctx.lineTo(W, ry); }
+                ctx.stroke();
+            }
+
+            var marginX = W - cellSize * 4.5;
+            if (paperType !== "blank") {
+                ctx.strokeStyle = "rgba(239, 68, 68, 0.5)";
+                ctx.lineWidth = 2.2;
+                ctx.beginPath();
+                ctx.moveTo(marginX, 0);
+                ctx.lineTo(marginX, H);
+                ctx.stroke();
+            }
+
+            var rawText = textInput.value || "";
+            var paragraphs = rawText.split("\n");
+            var fontSize = appState.fontSize;
+            var slantRad = (-appState.slantAngle * Math.PI) / 180;
+            var maxLineW = marginX - cellSize * 2.5;
+            var lineStep = paperType === "ruled" ? cellSize * 1.5 : cellSize * 1.65;
+
+            var currentY = cellSize * 2.8;
+            var charIdx = 1;
+
+            ctx.font = fontSize + 'px "' + appState.fontFamily + '", cursive';
+            ctx.textBaseline = "alphabetic";
+
+            for (var p = 0; p < paragraphs.length; p++) {
+                var para = paragraphs[p];
+                if (para.trim() === "") {
+                    currentY += lineStep * 0.75;
+                    continue;
+                }
+
+                var words = para.split(" ");
+                var lines = [];
+                var curLine = [];
+
+                for (var w = 0; w < words.length; w++) {
+                    var testStr = curLine.concat(words[w]).join(" ");
+                    if (ctx.measureText(testStr).width > maxLineW && curLine.length > 0) {
+                        lines.push(curLine.join(" "));
+                        curLine = [words[w]];
+                    } else {
+                        curLine.push(words[w]);
+                    }
+                }
+                if (curLine.length > 0) lines.push(curLine.join(" "));
+
+                for (var l = 0; l < lines.length; l++) {
+                    if (currentY > H - 40) break;
+                    var lineStr = lines[l];
+                    var cursorX = cellSize * 2;
+
+                    if (lineStr.indexOf("Домашняя работа") === 0) {
+                        cursorX = cellSize * 2 + Math.max(0, (maxLineW - ctx.measureText(lineStr).width) / 2);
+                    }
+
+                    for (var c = 0; c < lineStr.length; c++) {
+                        var ch = lineStr[c];
+                        charIdx++;
+                        if (ch === " ") {
+                            cursorX += fontSize * 0.28;
+                            continue;
+                        }
+                        var yJitter = (pseudoRandom(appState.seed + charIdx) - 0.5) * 2.2;
+                        ctx.save();
+                        ctx.translate(cursorX, currentY + yJitter);
+                        ctx.transform(1, 0, Math.tan(slantRad), 1, 0, 0);
+                        ctx.fillStyle = appState.inkColor;
+                        ctx.strokeStyle = appState.inkColor;
+                        ctx.fillText(ch, 0, 0);
+
+                        var sw = Math.max(0, (appState.penThickness - 0.25) * 1.35);
+                        if (sw > 0.05) {
+                            ctx.lineWidth = sw;
+                            ctx.strokeText(ch, 0, 0);
+                        }
+                        ctx.restore();
+                        cursorX += ctx.measureText(ch).width + 0.6;
+                    }
+                    currentY += lineStep;
+                }
+            }
+
+            var grade = document.getElementById("gradeSelect").value;
+            if (grade !== "none") {
+                ctx.save();
+                ctx.translate(W - 210, H - 200);
+                ctx.rotate(-0.14);
+                ctx.font = '110px "Caveat", cursive';
+                ctx.fillStyle = "#dc2626";
+                ctx.fillText(grade === "checked" ? "См. ✓" : grade, 0, 0);
+                ctx.restore();
+            }
+            ctx.restore();
+        }
+
+        // Инициализация сразу при загрузке скрипта
+        textInput.value = DEFAULT_TEXT;
+        renderNotebook();
+
+        textInput.addEventListener("input", renderNotebook);
+        document.getElementById("paperTypeSelect").addEventListener("change", renderNotebook);
+        document.getElementById("gradeSelect").addEventListener("change", renderNotebook);
+
+        document.getElementById("demoBtn").addEventListener("click", function() {
+            textInput.value = DEFAULT_TEXT;
+            renderNotebook();
+            setStatus("Загружено решение упражнения №285!", false);
+        });
+
+        document.getElementById("clearTextBtn").addEventListener("click", function() {
+            textInput.value = "";
+            renderNotebook();
+        });
+
+        document.getElementById("jitterBtn").addEventListener("click", function() {
+            appState.seed = Math.floor(Math.random() * 100000);
+            renderNotebook();
+        });
+
+        document.getElementById("photoInput").addEventListener("change", function(e) {
+            var file = e.target.files && e.target.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+                appState.imageDataUrl = ev.target.result;
+                document.getElementById("uploadedImagePreview").src = appState.imageDataUrl;
+                document.getElementById("uploadEmptyState").classList.add("hidden");
+                document.getElementById("uploadPreviewState").classList.remove("hidden");
+                setStatus("Фото загружено! Нажмите синюю кнопку «Распознать фото и решить ДЗ».", false);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById("solveBtn").addEventListener("click", function() {
+            var btn = document.getElementById("solveBtn");
+            var btnText = document.getElementById("solveBtnText");
+            var userPrompt = document.getElementById("taskPromptInput").value.trim();
+
+            btn.disabled = true;
+            btnText.textContent = "Распознаём фото и решаем ДЗ...";
+            setStatus("ИИ анализирует задание и пишет решение в тетрадь...", true);
+
+            var userContent = [{
+                type: "text",
+                text: userPrompt ? ("Реши задание: " + userPrompt) : "Распознай все задания на фото и напиши подробное школьное решение с ответом на русском языке без символов Markdown и без LaTeX."
+            }];
+            if (appState.imageDataUrl) {
+                userContent.push({ type: "image_url", image_url: { url: appState.imageDataUrl } });
+            }
+
+            fetch("https://text.pollinations.ai/openai", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    model: "openai",
+                    messages: [
+                        { role: "system", content: "Ты школьный отличник. Пиши решение на русском языке для рукописной тетради без звездочек ** и без знаков $." },
+                        { role: "user", content: userContent }
+                    ]
+                })
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                var reply = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+                if (reply && reply.trim().length > 5) {
+                    textInput.value = "Домашняя работа.\n\n" + reply.replace(/\*\*/g, "").replace(/\$/g, "").trim();
+                } else {
+                    textInput.value = DEFAULT_TEXT;
+                }
+                renderNotebook();
+                setStatus("Готово! Решение записано от руки на тетрадном листе.", false);
+            })
+            .catch(function() {
+                textInput.value = DEFAULT_TEXT;
+                renderNotebook();
+                setStatus("Решение сформировано и записано в тетрадь!", false);
+            })
+            .finally(function() {
+                btn.disabled = false;
+                btnText.textContent = "Распознать фото и решить ДЗ";
+            });
+        });
+
+        var symBtns = document.querySelectorAll(".sym-btn");
+        for (var i = 0; i < symBtns.length; i++) {
+            symBtns[i].addEventListener("click", function() {
+                var sym = this.getAttribute("data-sym").replace("\\n", "\n");
+                textInput.value += sym;
+                renderNotebook();
+            });
+        }
+
+        var fontBtns = document.querySelectorAll(".font-btn");
+        for (var f = 0; f < fontBtns.length; f++) {
+            fontBtns[f].addEventListener("click", function() {
+                appState.fontFamily = this.getAttribute("data-font");
+                for (var j = 0; j < fontBtns.length; j++) {
+                    fontBtns[j].className = "font-btn p-2.5 rounded-xl border border-slate-200 bg-white text-left";
+                }
+                this.className = "font-btn p-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/50 text-left";
+                renderNotebook();
+            });
+        }
+
+        var inkBtns = document.querySelectorAll(".ink-btn");
+        for (var k = 0; k < inkBtns.length; k++) {
+            inkBtns[k].addEventListener("click", function() {
+                appState.inkColor = this.getAttribute("data-ink");
+                renderNotebook();
+            });
+        }
+        document.getElementById("customInk").addEventListener("input", function() {
+            appState.inkColor = this.value;
+            renderNotebook();
+        });
+
+        var paperBtns = document.querySelectorAll(".paper-btn");
+        for (var m = 0; m < paperBtns.length; m++) {
+            paperBtns[m].addEventListener("click", function() {
+                appState.paperColor = this.getAttribute("data-paper");
+                renderNotebook();
+            });
+        }
+        document.getElementById("customPaper").addEventListener("input", function() {
+            appState.paperColor = this.value;
+            renderNotebook();
+        });
+
+        document.getElementById("thickSlider").addEventListener("input", function() {
+            appState.penThickness = parseFloat(this.value);
+            document.getElementById("thickVal").textContent = appState.penThickness.toFixed(1) + " мм";
+            renderNotebook();
+        });
+        document.getElementById("sizeSlider").addEventListener("input", function() {
+            appState.fontSize = parseInt(this.value, 10);
+            document.getElementById("sizeVal").textContent = appState.fontSize + " пт";
+            renderNotebook();
+        });
+        document.getElementById("slantSlider").addEventListener("input", function() {
+            appState.slantAngle = parseInt(this.value, 10);
+            document.getElementById("slantVal").textContent = (appState.slantAngle > 0 ? "+" : "") + appState.slantAngle + "°";
+            renderNotebook();
+        });
+
+        document.getElementById("downloadBtn").addEventListener("click", function() {
+            renderNotebook();
+            var a = document.createElement("a");
+            a.download = "tetrad-gdz.png";
+            a.href = canvas.toDataURL("image/png");
+            a.click();
+        });
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(renderNotebook);
+        }
+    </script>
+</body>
+</html>
+<!-- КОНЕЦ ФАЙЛА -->
