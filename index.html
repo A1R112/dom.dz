@@ -123,17 +123,23 @@
                     </div>
                 </div>
 
+                <!-- Зона загрузки фото с рабочим тегом label -->
                 <label for="photoInput" class="block border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-3 text-center cursor-pointer transition bg-slate-50 relative">
                     <input type="file" id="photoInput" accept="image/*" class="hidden">
                     <div id="uploadEmptyState" class="py-2">
                         <i class="fa-solid fa-camera-retro text-xl text-blue-600 mb-1"></i>
-                        <p class="text-xs font-semibold text-slate-700">Загрузить фото учебника (распознает всё)</p>
+                        <p class="text-xs font-semibold text-slate-700">Загрузить фото учебника (нажмите здесь)</p>
                     </div>
-                    <div id="uploadPreviewState" class="hidden relative">
-                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-32 mx-auto rounded-lg border bg-white object-contain">
-                        <p class="text-[11px] text-emerald-700 font-semibold mt-1">Фото загружено</p>
+                    <div id="uploadPreviewState" class="hidden text-center">
+                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-36 mx-auto rounded-lg border bg-white object-contain shadow-sm">
+                        <p class="text-xs text-emerald-700 font-bold mt-1.5"><i class="fa-solid fa-circle-check"></i> Фото успешно загружено! (Нажмите для замены)</p>
                     </div>
                 </label>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Уточнение или текст задачи:</label>
+                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Решить подробно все пункты..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
 
                 <button type="button" id="solveBtn" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-md transition cursor-pointer">
                     <i class="fa-solid fa-bolt mr-1"></i> Получить решение и объяснение
@@ -216,7 +222,7 @@
     </main>
 
     <script>
-        var DEFAULT_TEXT = "Домашняя работа.\n(РешУтка.ру — Алгебра 8 класс, №285)\n\nРешение:\nа) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) = (1 - 2x) / (1 - x).\nб) ((a + b) / b - a / (a + b)) : ((a + b) / a - b / (a + b)) = a / b.\nв) (3a² - a + 3) / (a³ - 1) - (a - 1) / (a² + a + 1) + 2 / (1 - a) = a / (1 - a³).\n\nПодробное объяснение:\n1) В таких заданиях сначала выполняются действия в скобках. Дроби привносятся к общему знаменателю.\n2) Используются формулы сокращенного умножения (разность квадратов, разность кубов).\n3) Деление заменяется умножением на обратную дробь, после чего производится сокращение числителя и знаменателя.";
+        var DEFAULT_TEXT = "Домашняя работа.\n(РешУтка.ру — Алгебра 8 класс, №285)\n\nРешение:\nа) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) = (1 - 2x) / (1 - x).\nб) ((a + b) / b - a / (a + b)) : ((a + b) / a - b / (a + b)) = a / b.\nв) (3a² - a + 3) / (a³ - 1) - (a - 1) / (a² + a + 1) + 2 / (1 - a) = a / (1 - a³).\n\nПодробное объяснение:\n1) В таких заданиях сначала выполняются действия в скобках. Дроби приводятся к общему знаменателю.\n2) Используются формулы сокращенного умножения (разность квадратов, разность кубов).\n3) Деление заменяется умножением на обратную дробь, после чего производится сокращение числителя и знаменателя.";
 
         var appState = {
             imageDataUrl: null,
@@ -398,7 +404,7 @@
                 document.getElementById("uploadedImagePreview").src = appState.imageDataUrl;
                 document.getElementById("uploadEmptyState").classList.add("hidden");
                 document.getElementById("uploadPreviewState").classList.remove("hidden");
-                setStatus("Фото загружено! Нажмите «Получить решение».", false);
+                setStatus("Фото успешно загружено! Нажмите кнопку «Получить решение и объяснение».", false);
             };
             reader.readAsDataURL(file);
         });
@@ -411,14 +417,14 @@
             var userPrompt = document.getElementById("taskPromptInput").value.trim();
 
             btn.disabled = true;
-            setStatus("Получаем решение и формируем объяснение с РешУтка.ру...", true);
+            setStatus("Анализируем фото, получаем решение и объяснение с РешУтка.ру...", true);
 
             try {
                 var queryDetails = "Предмет: " + subject + ", " + gradeClass + ". Номер: №" + (taskNum || "285") + ". " + (userPrompt ? "Условие: " + userPrompt : "");
                 
                 var userContent = [{
                     type: "text",
-                    text: queryDetails + "\nВыдай решение строго в таком формате:\n1. Сначала напиши сами ответы и пошаговый процесс решения.\n2. В САМОМ КОНЦЕ добавь отдельный блок с заголовком «Подробное объяснение:» и полностью объясни логику, формулы и правила, по которым это решается."
+                    text: queryDetails + "\nРеши все задачи с фото подробно. Выдай решение строго в таком формате:\n1. Сначала напиши сами ответы и пошаговый процесс решения.\n2. В САМОМ КОНЦЕ добавь отдельный блок с заголовком «Подробное объяснение:» и полностью объясни логику, формулы и правила."
                 }];
 
                 if (appState.imageDataUrl) {
@@ -431,7 +437,7 @@
                     body: JSON.stringify({
                         model: "openai",
                         messages: [
-                            { role: "system", content: "Ты — решебник РешУтка.ру. Всегда сначала давай полное решение с ответами, а в конце обязательно пиши понятное подробное объяснение для ученика. Пиши на русском языке, без Markdown и без знаков $." },
+                            { role: "system", content: "Ты — решебник РешУтка.ру. Всегда читай фото, давай полное решение с ответами, а в конце пиши понятное подробное объяснение. Пиши на русском языке, без Markdown и без знаков $." },
                             { role: "user", content: userContent }
                         ]
                     })
@@ -444,7 +450,7 @@
                     textInput.value = DEFAULT_TEXT;
                 }
                 renderNotebook();
-                setStatus("Готово! Решение и объяснение записаны в тетрадь.", false);
+                setStatus("Готово! Решение и подробное объяснение записаны в тетрадь.", false);
             } catch (e) {
                 textInput.value = DEFAULT_TEXT;
                 renderNotebook();
@@ -471,3 +477,31 @@
         }
         document.getElementById("customInk").addEventListener("input", function() {
             appState.inkColor = this.value;
+            renderNotebook();
+        });
+
+        document.getElementById("thickSlider").addEventListener("input", function() {
+            appState.penThickness = parseFloat(this.value);
+            document.getElementById("thickVal").textContent = appState.penThickness.toFixed(1) + " мм";
+            renderNotebook();
+        });
+        document.getElementById("sizeSlider").addEventListener("input", function() {
+            appState.fontSize = parseInt(this.value, 10);
+            document.getElementById("sizeVal").textContent = appState.fontSize + " пт";
+            renderNotebook();
+        });
+
+        document.getElementById("downloadBtn").addEventListener("click", function() {
+            renderNotebook();
+            var a = document.createElement("a");
+            a.download = "tetrad-reshutka.png";
+            a.href = canvas.toDataURL("image/png");
+            a.click();
+        });
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(renderNotebook);
+        }
+    </script>
+</body>
+</html>
