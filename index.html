@@ -55,10 +55,10 @@
                     <div class="flex items-center gap-2">
                         <h1 class="font-bold text-lg sm:text-xl text-slate-900">Почерк<span class="text-blue-600">.AI</span></h1>
                         <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-300">
-                            РешУтка.ру + Все пункты
+                            РешУтка.ру (Любые номера)
                         </span>
                     </div>
-                    <p class="text-xs text-slate-500 hidden sm:block">Решает абсолютно все пункты с фото</p>
+                    <p class="text-xs text-slate-500 hidden sm:block">Решает любые номера с фото и по параметрам</p>
                 </div>
             </div>
 
@@ -87,8 +87,8 @@
                         <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">1</span>
                         <h2 class="font-bold text-slate-800 text-base">Поиск решения</h2>
                     </div>
-                    <button type="button" id="demoBtn" class="text-xs text-blue-600 hover:text-blue-800 font-semibold cursor-pointer">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i> Пример №285 (все пункты)
+                    <button type="button" id="clearAllBtn" class="text-xs text-slate-400 hover:text-red-600 cursor-pointer">
+                        <i class="fa-solid fa-rotate-right mr-1"></i>Сбросить
                     </button>
                 </div>
 
@@ -115,10 +115,11 @@
                                 <option value="Геометрия">Геометрия</option>
                                 <option value="Физика">Физика</option>
                                 <option value="Химия">Химия</option>
+                                <option value="Русский язык">Русский язык</option>
                             </select>
                         </div>
                         <div>
-                            <input type="text" id="taskNumberInput" placeholder="№ 285" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
+                            <input type="text" id="taskNumberInput" placeholder="№ 312" class="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-xs bg-white font-medium">
                         </div>
                     </div>
                 </div>
@@ -128,21 +129,21 @@
                     <input type="file" id="photoInput" accept="image/*" class="hidden">
                     <div id="uploadEmptyState" class="py-2">
                         <i class="fa-solid fa-camera-retro text-xl text-blue-600 mb-1"></i>
-                        <p class="text-xs font-semibold text-slate-700">Загрузить фото учебника (распознает всё)</p>
+                        <p class="text-xs font-semibold text-slate-700">Загрузить фото вашего номера (распознает любые)</p>
                     </div>
                     <div id="uploadPreviewState" class="hidden text-center">
                         <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-36 mx-auto rounded-lg border bg-white object-contain shadow-sm">
-                        <p class="text-xs text-emerald-700 font-bold mt-1.5"><i class="fa-solid fa-circle-check"></i> Фото успешно загружено! (Нажмите для замены)</p>
+                        <p class="text-xs text-emerald-700 font-bold mt-1.5"><i class="fa-solid fa-circle-check"></i> Фото загружено! (Нажмите для замены)</p>
                     </div>
                 </label>
 
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Уточнение или текст задачи:</label>
-                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Решить абсолютно все пункты (а, б, в, г, д)..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    <textarea id="taskPromptInput" rows="2" placeholder="Например: Решить абсолютно все пункты..." class="w-full rounded-xl border border-slate-200 px-3 py-2 text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
                 <button type="button" id="solveBtn" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-md transition cursor-pointer">
-                    <i class="fa-solid fa-bolt mr-1"></i> Получить решение всех пунктов и объяснение
+                    <i class="fa-solid fa-bolt mr-1"></i> Получить решение и объяснение с РешУтка.ру
                 </button>
 
                 <div id="statusBox" class="hidden p-3 rounded-xl text-xs font-medium border"></div>
@@ -154,7 +155,7 @@
                     <h2 class="font-bold text-slate-800 text-base">Решение и объяснение в тетради</h2>
                     <button type="button" id="clearTextBtn" class="text-xs text-slate-500 hover:text-red-600 cursor-pointer">Очистить</button>
                 </div>
-                <textarea id="notebookTextInput" rows="11" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 font-mono resize-y"></textarea>
+                <textarea id="notebookTextInput" rows="11" class="w-full flex-1 rounded-xl border border-slate-200 p-3 text-sm text-slate-800 font-mono resize-y" placeholder="Загрузите фото или укажите номер задачи, и здесь появится решение..."></textarea>
             </div>
         </section>
 
@@ -222,8 +223,6 @@
     </main>
 
     <script>
-        var DEFAULT_TEXT = "Домашняя работа.\n(РешУтка.ру — Алгебра 8 класс, №285)\n\nРешение:\nа) (1 - 3x² / (1 - x²)) : (x / (x + 1) + 1) = (1 - 2x) / (1 - x).\nб) ((a + b) / b - a / (a + b)) : ((a + b) / a - b / (a + b)) = a / b.\nв) (3a² - a + 3) / (a³ - 1) - (a - 1) / (a² + a + 1) + 2 / (1 - a) = a / (1 - a³).\nг) (2b / (1 - b) - b) : ((3b + b²) / (b - 1)) = -(b + 1) / (b + 3).\nд) (a - x + x² / (a + x)) · (a - x) / a = a(a - x) / (a + x).\n\nПодробное объяснение:\n1) В таких заданиях сначала выполняются действия в скобках. Дроби приводятся к общему знаменателю.\n2) Используются формулы сокращенного умножения (разность квадратов, разность кубов).\n3) Деление заменяется умножением на обратную дробь, после чего производится сокращение числителя и знаменателя.";
-
         var appState = {
             imageDataUrl: null,
             fontFamily: "Caveat",
@@ -370,138 +369,17 @@
             ctx.restore();
         }
 
-        if (!textInput.value.trim()) {
-            textInput.value = DEFAULT_TEXT;
-        }
         renderNotebook();
 
         textInput.addEventListener("input", renderNotebook);
         document.getElementById("paperTypeSelect").addEventListener("change", renderNotebook);
         document.getElementById("gradeSelect").addEventListener("change", renderNotebook);
 
-        document.getElementById("demoBtn").addEventListener("click", function() {
-            textInput.value = DEFAULT_TEXT;
-            renderNotebook();
-            setStatus("Загружено полное решение упражнения №285 (все пункты а–д) с объяснением!", false);
-        });
-
-        document.getElementById("clearTextBtn").addEventListener("click", function() {
+        document.getElementById("clearAllBtn").addEventListener("click", function() {
             textInput.value = "";
-            renderNotebook();
-        });
-
-        document.getElementById("jitterBtn").addEventListener("click", function() {
-            appState.seed = Math.floor(Math.random() * 100000);
-            renderNotebook();
-        });
-
-        document.getElementById("photoInput").addEventListener("change", function(e) {
-            var file = e.target.files && e.target.files[0];
-            if (!file) return;
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-                appState.imageDataUrl = ev.target.result;
-                document.getElementById("uploadedImagePreview").src = appState.imageDataUrl;
-                document.getElementById("uploadEmptyState").classList.add("hidden");
-                document.getElementById("uploadPreviewState").classList.remove("hidden");
-                setStatus("Фото успешно загружено! Нажмите кнопку «Получить решение всех пунктов».", false);
-            };
-            reader.readAsDataURL(file);
-        });
-
-        document.getElementById("solveBtn").addEventListener("click", async function() {
-            var btn = document.getElementById("solveBtn");
-            var taskNum = document.getElementById("taskNumberInput").value.trim();
-            var gradeClass = document.getElementById("classSelect").value;
-            var subject = document.getElementById("subjectSelect").value;
-            var userPrompt = document.getElementById("taskPromptInput").value.trim();
-
-            btn.disabled = true;
-            setStatus("Решаем ВСЕ пункты задания, пишем ход решения и объяснение...", true);
-
-            try {
-                var queryDetails = "Предмет: " + subject + ", " + gradeClass + ". Номер: №" + (taskNum || "285") + ". " + (userPrompt ? "Условие: " + userPrompt : "");
-                
-                var userContent = [{
-                    type: "text",
-                    text: queryDetails + "\nВНИМАНИЕ: Реши АБСОЛЮТНО ВСЕ пункты задания (а, б, в, г, д и т.д.), которые есть на фото или в номере. Не пропускай ни одного пункта! Выдай решение строго в таком формате:\n1. Сначала напиши пошаговое решение абсолютно всех пунктов (а, б, в, г, д...).\n2. В САМОМ КОНЦЕ добавь подробное объяснение правил и формул."
-                }];
-
-                if (appState.imageDataUrl) {
-                    userContent.push({ type: "image_url", image_url: { url: appState.imageDataUrl } });
-                }
-
-                var response = await fetch("https://text.pollinations.ai/openai", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        model: "openai",
-                        messages: [
-                            { role: "system", content: "Ты — решебник РешУтка.ру. Всегда решай ВСЕ пункты задания полностью без сокращений и пропусков. В конце давай понятное объяснение. Пиши на русском языке, без Markdown и без знаков $." },
-                            { role: "user", content: userContent }
-                        ]
-                    })
-                });
-                var data = await response.json();
-                var reply = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-                if (reply && reply.length > 5) {
-                    textInput.value = "Домашняя работа.\n(РешУтка.ру — " + subject + ", " + gradeClass + (taskNum ? ", №" + taskNum : "") + ")\n\n" + reply.replace(/\*\*/g, "").replace(/\$/g, "");
-                } else {
-                    textInput.value = DEFAULT_TEXT;
-                }
-                renderNotebook();
-                setStatus("Готово! Все пункты решения и подробное объяснение записаны в тетрадь.", false);
-            } catch (e) {
-                textInput.value = DEFAULT_TEXT;
-                renderNotebook();
-                setStatus("Все пункты решения успешно загружены!", false);
-            } finally {
-                btn.disabled = false;
-            }
-        });
-
-        var fontBtns = document.querySelectorAll(".font-btn");
-        for (var f = 0; f < fontBtns.length; f++) {
-            fontBtns[f].addEventListener("click", function() {
-                appState.fontFamily = this.getAttribute("data-font");
-                renderNotebook();
-            });
-        }
-
-        var inkBtns = document.querySelectorAll(".ink-btn");
-        for (var k = 0; k < inkBtns.length; k++) {
-            inkBtns[k].addEventListener("click", function() {
-                appState.inkColor = this.getAttribute("data-ink");
-                renderNotebook();
-            });
-        }
-        document.getElementById("customInk").addEventListener("input", function() {
-            appState.inkColor = this.value;
-            renderNotebook();
-        });
-
-        document.getElementById("thickSlider").addEventListener("input", function() {
-            appState.penThickness = parseFloat(this.value);
-            document.getElementById("thickVal").textContent = appState.penThickness.toFixed(1) + " мм";
-            renderNotebook();
-        });
-        document.getElementById("sizeSlider").addEventListener("input", function() {
-            appState.fontSize = parseInt(this.value, 10);
-            document.getElementById("sizeVal").textContent = appState.fontSize + " пт";
-            renderNotebook();
-        });
-
-        document.getElementById("downloadBtn").addEventListener("click", function() {
-            renderNotebook();
-            var a = document.createElement("a");
-            a.download = "tetrad-reshutka.png";
-            a.href = canvas.toDataURL("image/png");
-            a.click();
-        });
-
-        if (document.fonts && document.fonts.ready) {
-            document.fonts.ready.then(renderNotebook);
-        }
-    </script>
-</body>
-</html>
+            appState.imageDataUrl = null;
+            document.getElementById("photoInput").value = "";
+            document.getElementById("uploadPreviewState").classList.add("hidden");
+            document.getElementById("uploadEmptyState").classList.remove("hidden");
+            document.getElementById("taskNumberInput").value = "";
+            document.getElementById("reshut
