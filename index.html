@@ -124,16 +124,16 @@
                     </div>
                 </div>
 
-                <!-- Зона загрузки фото -->
+                <!-- Зона загрузки фото с рабочим тегом label -->
                 <label for="photoInput" class="block border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-3 text-center cursor-pointer transition bg-slate-50 relative">
                     <input type="file" id="photoInput" accept="image/*" class="hidden">
                     <div id="uploadEmptyState" class="py-2">
                         <i class="fa-solid fa-camera-retro text-xl text-blue-600 mb-1"></i>
-                        <p class="text-xs font-semibold text-slate-700">Загрузить фото вашего номера (распознает любые)</p>
+                        <p class="text-xs font-semibold text-slate-700">Загрузить фото вашего номера (нажмите сюда)</p>
                     </div>
                     <div id="uploadPreviewState" class="hidden text-center">
-                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-36 mx-auto rounded-lg border bg-white object-contain shadow-sm">
-                        <p class="text-xs text-emerald-700 font-bold mt-1.5"><i class="fa-solid fa-circle-check"></i> Фото загружено! (Нажмите для замены)</p>
+                        <img id="uploadedImagePreview" src="" alt="Фото" class="max-h-40 mx-auto rounded-lg border bg-white object-contain shadow-sm">
+                        <p class="text-xs text-emerald-700 font-bold mt-1.5"><i class="fa-solid fa-circle-check"></i> Фото успешно загружено! (Нажмите для замены)</p>
                     </div>
                 </label>
 
@@ -382,4 +382,6 @@
             document.getElementById("uploadPreviewState").classList.add("hidden");
             document.getElementById("uploadEmptyState").classList.remove("hidden");
             document.getElementById("taskNumberInput").value = "";
-            document.getElementById("reshut
+            document.getElementById("reshutkaUrlInput").value = "";
+            document.getElementById("taskPromptInput").value = "";
+            document.getElementById("statusBox").classList.add("hidden");
